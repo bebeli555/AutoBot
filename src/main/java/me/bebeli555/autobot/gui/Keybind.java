@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.lwjgl.input.Keyboard;
 
 import me.bebeli555.autobot.Commands;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
@@ -21,6 +22,7 @@ public class Keybind {
 		if (id != null) {
 			if (id.equals("Keybind")) {
 				Commands.openGui = true;
+				MinecraftForge.EVENT_BUS.register(Gui.gui);
 			} else {
 				GuiNode node = Settings.getGuiNodeFromId(id.replace("Keybind", ""));
 				node.click();	
