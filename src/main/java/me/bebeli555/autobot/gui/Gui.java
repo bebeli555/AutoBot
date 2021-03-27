@@ -98,10 +98,8 @@ public class Gui extends GuiScreen {
 		if (dragging != null) {
 			if (Mouse.isButtonDown(1) || Mouse.isButtonDown(0)) {
 				if (mouseY > 10) {
-					if (mouseX < (mc.displayWidth / 2) - 100) {
-						dragging.x += mouseX - lastMouseX;
-						dragging.y += mouseY - lastMouseY;
-					}
+					dragging.x += mouseX - lastMouseX;
+					dragging.y += mouseY - lastMouseY;
 				}
 			} else {
 				dragging = null;
@@ -318,6 +316,10 @@ public class Gui extends GuiScreen {
 	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
+		//Just use the lastMouse positions saved by the rendering loop because these are different
+		x = lastMouseX;
+		y = lastMouseY;
+		
 		//Open discord link if the thing is clicked
 		if (0 < x && 150 > x && 0 < y && 34 > y) {
 			try {
@@ -337,7 +339,7 @@ public class Gui extends GuiScreen {
 		
 		for (GuiClick guiClick : visibleNodes) {
 			if (guiClick.x < x && guiClick.x2 > x && guiClick.y < y && guiClick.y2 > y) {
-				if (Mouse.isButtonDown(1)) {
+				if (button == 1) {
 					if (!guiClick.guiNode.parentedNodes.isEmpty()) {
 						guiClick.guiNode.extend(!guiClick.guiNode.parentedNodes.get(0).isVisible);
 					}
