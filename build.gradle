@@ -72,6 +72,20 @@ dependencies {
     }
 }
 
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
 jar {
     manifest {
         attributes(
@@ -97,6 +111,8 @@ shadowJar {
         include(dependency('net.jodah:typetools'))
     }
 
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
     classifier = 'release'
 }
 
