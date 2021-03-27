@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "me.bebeli555.autobot.mixin.mixins",
+  "refmap": "mixins.autobot.refmap.json",
+  "client": [
+    "MixinEntityPlayer",
+    "MixinEntityPlayerSP",
+    "MixinNetworkManager"
+  ]
+}
