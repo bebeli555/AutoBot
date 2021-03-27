@@ -109,9 +109,10 @@ public class Gui extends GuiScreen {
 		}
 		
 		//Top left info text
-		drawRect(0, 0, 149, 34, 0xFF000000);
-		drawRect(0, 33, 149, 34, 0x99d303fc);
-		drawRect(149, 0, 150, 34, 0x99d303fc);
+		int infoWidth = mc.fontRenderer.getStringWidth(ChatFormatting.RED + "Discord: " + ChatFormatting.GREEN + AutoBot.DISCORD + 2);
+		drawRect(0, 0, infoWidth, 34, 0xFF000000);
+		drawRect(0, 33, infoWidth, 34, 0x99d303fc);
+		drawRect(infoWidth, 0, infoWidth + 1, 34, 0x99d303fc);
 		mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "AutoBot" + ChatFormatting.GREEN + " V" + AutoBot.VERSION, 2, 2, 0xFF000000);
 		mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Made by: " + ChatFormatting.GREEN + "bebeli555", 2, 12, 0xFF000000);
 		mc.fontRenderer.drawStringWithShadow(ChatFormatting.RED + "Discord: " + ChatFormatting.GREEN + AutoBot.DISCORD, 2, 22, 0xFF000000);
