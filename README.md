@@ -6,6 +6,3 @@ AutoBot is a module styled client for anarchy servers that offers bots and auto-
 <br/>
 <br/>
 You can build the project by running gradlew setupDecompWorkspace and gradlew build. Or you can download the jar from the releases tab or from our discord.
-<br/>
-<br/>
-Some of the features need baritone to work so you should also download it if you dont already have it.
