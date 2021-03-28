@@ -146,7 +146,7 @@ public class ElytraBot extends AutoBot {
 		//Check if there is an elytra equipped if not then equip it or toggle off if no elytra in inventory
 		if (InventoryUtil.getItemStack(38).getItem() != Items.ELYTRA) {
 			if (InventoryUtil.hasItem(Items.ELYTRA)) {
-				int elytraSlot = InventoryUtil.getItem(Items.ELYTRA);
+				int elytraSlot = InventoryUtil.getSlot(Items.ELYTRA);
 				InventoryUtil.clickSlot(elytraSlot);
 				InventoryUtil.clickSlot(38);
 				InventoryUtil.clickSlot(elytraSlot);
@@ -521,7 +521,7 @@ public class ElytraBot extends AutoBot {
 	
 	public static void clickOnFirework() {
 		if (mc.player.getHeldItemMainhand().getItem() != Items.FIREWORKS) {
-			InventoryUtil.switchItem(InventoryUtil.getItem(Items.FIREWORKS), false);
+			InventoryUtil.switchItem(InventoryUtil.getSlot(Items.FIREWORKS), false);
 		}
 		
 		//Click

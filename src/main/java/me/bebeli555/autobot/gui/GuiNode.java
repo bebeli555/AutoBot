@@ -109,11 +109,11 @@ public class GuiNode extends AutoBot {
 			for (AutoBot module : modules) {
 				if (module.name.equals(name)) {
 					if (toggled) {
-						sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.GREEN + "ON", false);
+						if (!module.disableToggleMessage) sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.GREEN + "ON", false);
 						module.onEnabled();
 						module.toggled = true;
 					} else {
-						sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.RED + "OFF", false);
+						if (!module.disableToggleMessage) sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.RED + "OFF", false);
 						module.onDisabled();
 						module.toggled = false;
 					}

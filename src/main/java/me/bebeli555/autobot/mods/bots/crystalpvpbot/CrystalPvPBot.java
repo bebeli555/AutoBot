@@ -417,7 +417,7 @@ public class CrystalPvPBot extends AutoBot {
 	public void attackEntity(Entity entity) {
 		setStatus("Attacking target with sword");
 		if (InventoryUtil.hasItem(Items.DIAMOND_SWORD)) {
-			InventoryUtil.switchItem(InventoryUtil.getItem(Items.DIAMOND_SWORD), false);
+			InventoryUtil.switchItem(InventoryUtil.getSlot(Items.DIAMOND_SWORD), false);
 		}
 		
 		sleep(600);

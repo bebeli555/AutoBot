@@ -129,19 +129,6 @@ public class InventoryUtil extends AutoBot {
 	}
 	
 	/**
-	 * Get the slot of given item
-	 */
-	public static int getItem(Item item) {
-		for (ItemStackUtil itemStack : getAllItems()) {
-			if (itemStack.itemStack.getItem() == item) {
-				return itemStack.slotId;
-			}
-		}
-		
-		return -1;
-	}
-	
-	/**
 	 * Gets the amount of the given items u have in ur inventory
 	 */
 	public static int getAmountOfItem(Item item) {

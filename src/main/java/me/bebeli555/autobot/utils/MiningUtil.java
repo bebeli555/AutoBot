@@ -26,7 +26,7 @@ public class MiningUtil extends AutoBot {
 			return false;
 		}
 		
-		InventoryUtil.switchItem(InventoryUtil.getItem(Items.DIAMOND_PICKAXE), false);
+		InventoryUtil.switchItem(InventoryUtil.getSlot(Items.DIAMOND_PICKAXE), false);
 		
 		if (mc.player.inventory.getCurrentItem().getItem() == Items.DIAMOND_PICKAXE) {
 			MiningUtil.pos = pos;

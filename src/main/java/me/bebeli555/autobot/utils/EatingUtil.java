@@ -17,7 +17,7 @@ public class EatingUtil extends AutoBot {
 			return false;
 		}
 		
-		InventoryUtil.switchItem(InventoryUtil.getItem(item), false);
+		InventoryUtil.switchItem(InventoryUtil.getSlot(item), false);
 		
 		if (mc.player.inventory.getCurrentItem().getItem() == item) {
 			if (mc.currentScreen != null) {

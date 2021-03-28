@@ -35,7 +35,7 @@ public class AutoTotem extends AutoBot {
 				NoMovement.toggle(true);
 			}
 			
-			InventoryUtil.clickSlot(InventoryUtil.getItem(Items.TOTEM_OF_UNDYING));
+			InventoryUtil.clickSlot(InventoryUtil.getSlot(Items.TOTEM_OF_UNDYING));
 			InventoryUtil.clickSlot(45);
 		} else {
 			NoMovement.toggle(false);

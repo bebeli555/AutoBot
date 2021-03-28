@@ -176,7 +176,7 @@ public class ObbyBuilderBot extends AutoBot {
 				
 				//Now place water so we can use it to place a block below
 				setStatus("Placing water so we can place a block below");
-				InventoryUtil.switchItem(InventoryUtil.getItem(Items.WATER_BUCKET), true);
+				InventoryUtil.switchItem(InventoryUtil.getSlot(Items.WATER_BUCKET), true);
 				RotationUtil.rotate(new Vec3d(bestPos).add(-0.8, 1, 0.5), true);
 				PlayerUtil.rightClick();
 				BlockPos pos = bestPos.add(0, -3, 0);
@@ -191,7 +191,7 @@ public class ObbyBuilderBot extends AutoBot {
 				//Take water away
 				setStatus("Taking water back");
 				RotationUtil.rotate(new Vec3d(bestPos).add(-0.8, 1, 0.5), true);
-				InventoryUtil.switchItem(InventoryUtil.getItem(Items.BUCKET), true);
+				InventoryUtil.switchItem(InventoryUtil.getSlot(Items.BUCKET), true);
 				PlayerUtil.rightClick();
 				setStatus("Waiting for water to go down");
 				sleepUntil(() -> mc.world.getBlockState(pos).getMaterial() != Material.WATER, 15000);

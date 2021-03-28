@@ -80,7 +80,7 @@ public class AutoFirework extends AutoBot {
 		
 		//Put the best firework to hand
 		if (mc.player.getHeldItemMainhand().getItem() != Items.FIREWORKS) {
-			InventoryUtil.switchItem(InventoryUtil.getItem(Items.FIREWORKS), false);
+			InventoryUtil.switchItem(InventoryUtil.getSlot(Items.FIREWORKS), false);
 		}
 		
 		//Click

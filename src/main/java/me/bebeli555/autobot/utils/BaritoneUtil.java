@@ -11,25 +11,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 
 public class BaritoneUtil extends AutoBot {
-	private static Timer warningTimer = new Timer();
 	private static Consumer<ITextComponent> oldValue;
 	
 	/**
 	 * Send a baritone command without the baritone chat message
 	 */
 	public static void sendCommand(String command) {
-		if (isBaritoneInstalled()) {
-			if (oldValue == null) oldValue = BaritoneAPI.getSettings().logger.value;
-			BaritoneAPI.getSettings().logger.value = (component) -> {};
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute(command);
-			
-			new Thread() {
-				public void run() {
-					AutoBot.sleep(50);
-					BaritoneAPI.getSettings().logger.value = oldValue;
-				}
-			}.start();
-		}
+		if (oldValue == null) oldValue = BaritoneAPI.getSettings().logger.value;
+		//BaritoneAPI.getSettings().logger.value = (component) -> {};
+		BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute(command);
+		
+		new Thread() {
+			public void run() {
+				AutoBot.sleep(50);
+				BaritoneAPI.getSettings().logger.value = oldValue;
+			}
+		}.start();
 	}
 	
 	/**
@@ -37,14 +34,10 @@ public class BaritoneUtil extends AutoBot {
 	 * @sleepUntilDone if true, sleeps until baritone has walked to the goal
 	 */
 	public static void walkTo(BlockPos goal, boolean sleepUntilDone) {
-		if (!isBaritoneInstalled()) {
-			return;
-		}
-		
 		//Mine web inside us as it will prevent us from moving
 		if (getBlock(getPlayerPos()) == Blocks.WEB) {
 			if (InventoryUtil.hasItem(Items.DIAMOND_SWORD)) {
-				InventoryUtil.switchItem(InventoryUtil.getItem(Items.DIAMOND_SWORD), true);
+				InventoryUtil.switchItem(InventoryUtil.getSlot(Items.DIAMOND_SWORD), true);
 				MiningUtil.mineWithoutSwitch(getPlayerPos());
 			}
 		}
@@ -62,10 +55,6 @@ public class BaritoneUtil extends AutoBot {
 	 * Pretty hacky solution but eh
 	 */
 	public static boolean canPath(BlockPos goal) {
-		if (!isBaritoneInstalled()) {
-			return false;
-		}
-		
 		walkTo(goal, false);
 		boolean value = false;
 		for (int i = 0; i < 35; i++) {
@@ -85,31 +74,21 @@ public class BaritoneUtil extends AutoBot {
 	 * Cancel everything baritone is doing
 	 */
 	public static void forceCancel() {
-		if (isBaritoneInstalled()) {
-			BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
-		}
+		BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
 	}
 	
 	/**
 	 * Checks if baritone is pathing
 	 */
 	public static boolean isPathing() {
-		if (isBaritoneInstalled()) {
-			return BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing();	
-		} else {
-			return false;
-		}
+		return BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing();	
 	}
 	
 	/**
 	 * Checks if baritone is building something
 	 */
 	public static boolean isBuilding() {
-		if (isBaritoneInstalled()) {
-			return BaritoneAPI.getProvider().getPrimaryBaritone().getBuilderProcess().isActive();
-		} else {
-			return false;
-		}
+		return BaritoneAPI.getProvider().getPrimaryBaritone().getBuilderProcess().isActive();
 	}
 	
 	/**
@@ -117,20 +96,6 @@ public class BaritoneUtil extends AutoBot {
 	 */
 	public static void setSetting(String name, boolean value) {
 		sendCommand("setting " + name + " " + value);
-	}
-	
-	public static boolean isBaritoneInstalled() {
-		try {
-			BaritoneAPI.getProvider();
-			return true;
-		} catch (NoClassDefFoundError e) {
-			if (warningTimer.hasPassed(2000)) {
-				warningTimer.reset();
-				new AutoBot().sendMessage("ERROR: You dont have baritone installed and a module is trying to use it", true);
-			}
-			
-			return false;
-		}
 	}
 	
 	public static class BaritoneSettings {
@@ -142,19 +107,17 @@ public class BaritoneUtil extends AutoBot {
 		 * Didnt find any better way to do this so it just saves the settings used by the mod
 		 */
 		public void saveCurrentSettings() {
-			if (isBaritoneInstalled()) {
-				ArrayList<Settings.Setting<Boolean>> settings = new ArrayList<Settings.Setting<Boolean>>();
-				
-				settings.add(BaritoneAPI.getSettings().allowInventory);
-				settings.add(BaritoneAPI.getSettings().allowSprint);
-				settings.add(BaritoneAPI.getSettings().allowBreak);
-				settings.add(BaritoneAPI.getSettings().allowSprint);
-				settings.add(BaritoneAPI.getSettings().allowPlace);
-				
-				for (Settings.Setting<Boolean> setting : settings) {
-					names.add(setting.getName());
-					values.add(setting.value);
-				}
+			ArrayList<Settings.Setting<Boolean>> settings = new ArrayList<Settings.Setting<Boolean>>();
+			
+			settings.add(BaritoneAPI.getSettings().allowInventory);
+			settings.add(BaritoneAPI.getSettings().allowSprint);
+			settings.add(BaritoneAPI.getSettings().allowBreak);
+			settings.add(BaritoneAPI.getSettings().allowSprint);
+			settings.add(BaritoneAPI.getSettings().allowPlace);
+			
+			for (Settings.Setting<Boolean> setting : settings) {
+				names.add(setting.getName());
+				values.add(setting.value);
 			}
 		}
 		

@@ -25,6 +25,7 @@ import me.bebeli555.autobot.mods.other.AutoInventoryManager;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.mods.other.AutoTrap;
 import me.bebeli555.autobot.mods.other.AutoWither;
+import me.bebeli555.autobot.mods.other.Burrow;
 import me.bebeli555.autobot.rendering.Renderer;
 import me.bebeli555.autobot.utils.EatingUtil;
 import me.zero.alpine.EventBus;
@@ -47,7 +48,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class AutoBot {
     public static final String MODID = "autobot";
     public static final String NAME = "AutoBot";
-    public static final String VERSION = "1.01";
+    public static final String VERSION = "1.02";
     public static final String DISCORD = "discord.gg/xSukBcyd8m";
     
     public static Minecraft mc = Minecraft.getMinecraft();
@@ -56,7 +57,7 @@ public class AutoBot {
     public String name = "";
     public String[] description;
     public Group group;
-    public boolean toggled;
+    public boolean toggled, disableToggleMessage;
     public static ArrayList<AutoBot> modules = new ArrayList<AutoBot>();
     
     public AutoBot(Group group, String name, String... description) {
@@ -64,6 +65,11 @@ public class AutoBot {
     	this.name = name;
     	this.description = description;
     	modules.add(this);
+    }
+    
+    public AutoBot(Group group, String name, boolean disableToggleMessage, String... description) {
+    	this(group, name, description);
+    	this.disableToggleMessage = disableToggleMessage;
     }
     
     public AutoBot(Group group) {
@@ -98,6 +104,7 @@ public class AutoBot {
     			new AutoMend();
     			new AutoInventoryManager();
     			new AutoTrap();
+    			new Burrow();
     			
     			new Snake();
     			new Tetris();

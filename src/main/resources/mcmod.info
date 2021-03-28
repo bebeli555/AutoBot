@@ -3,7 +3,7 @@
   "modid": "AutoBot",
   "name": "AutoBot",
   "description": "AutoBot is a module styled client for anarchy servers that offers bots and auto-modules like ElytraBot which is a pathfinding bot for elytras or AutoBuilder that builds stuff etc.",
-  "version": "1.0",
+  "version": "1.02",
   "mcversion": "1.12.2",
   "url": "https://github.com/bebeli555/AutoBot",
   "updateUrl": "https://discord.gg/xSukBcyd8m",
