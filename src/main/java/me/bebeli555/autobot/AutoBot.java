@@ -28,6 +28,7 @@ import me.bebeli555.autobot.mods.other.AutoWither;
 import me.bebeli555.autobot.mods.other.Burrow;
 import me.bebeli555.autobot.rendering.Renderer;
 import me.bebeli555.autobot.utils.EatingUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import me.zero.alpine.EventBus;
 import me.zero.alpine.EventManager;
 import net.minecraft.block.Block;
@@ -126,29 +127,7 @@ public class AutoBot {
     public void onDisabled(){};
     public void onPostInit(){};
     
-    /**
-     * Sends a clientSided message
-     * @param red if true then message will be red if false then it will be some other color
-     * @param name of the module it will add in the message
-     * @param remove removes all the past messages made by the mod if true
-     */
-    public void sendMessage(String text, boolean red) {
-    	if (mc.player == null) {
-    		return;
-    	}
 
-    	//Send message
-    	String module = "";
-    	ChatFormatting color = ChatFormatting.WHITE;
-    	if (red) {
-    		color = ChatFormatting.RED;
-    	}
-    	if (!name.isEmpty()) {
-    		module = "-" + name;
-    	}
-    	
-    	mc.player.sendMessage(new TextComponentString(ChatFormatting.GREEN + "[" + ChatFormatting.LIGHT_PURPLE + "AutoBot" + module + ChatFormatting.GREEN + "] " + color + text));
-    }
     
     public void toggleModule() {
     	Settings.getGuiNodeFromId(name).click();
@@ -310,8 +289,8 @@ public class AutoBot {
 		public void onTick(ClientTickEvent e) {
 	    	if (!check && mc.player != null) {
 	    		if (!Settings.settings.exists()) {
-	    			new AutoBot().sendMessage("Welcome to " + ChatFormatting.GREEN + NAME + ChatFormatting.WHITE + " version " + ChatFormatting.GREEN + VERSION, false);
-	    			new AutoBot().sendMessage("You can open the GUI by typing " + ChatFormatting.GREEN + Commands.prefix + "gui" + ChatFormatting.WHITE + " on chat", false);
+	    			MessageUtil.sendChatMessage("Welcome to " + ChatFormatting.GREEN + NAME + ChatFormatting.WHITE + " version " + ChatFormatting.GREEN + VERSION);
+	    			MessageUtil.sendChatMessage("You can open the GUI by typing " + ChatFormatting.GREEN + Commands.prefix + "gui" + ChatFormatting.WHITE + " on chat");
 	    			Settings.saveSettings();
 	    		}
 	    		

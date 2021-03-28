@@ -6,10 +6,7 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
-import me.bebeli555.autobot.utils.BlockUtil;
-import me.bebeli555.autobot.utils.InventoryUtil;
-import me.bebeli555.autobot.utils.PlayerUtil;
-import me.bebeli555.autobot.utils.RotationUtil;
+import me.bebeli555.autobot.utils.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +44,7 @@ public class AutoTrap extends AutoBot {
 	
 	public void loop() {
 		if (!InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
-			sendMessage("You dont have any obsidian", true);
+			MessageUtil.sendWarningMessage("You dont have any obsidian");
 			toggleModule();
 		}
 		
@@ -55,7 +52,7 @@ public class AutoTrap extends AutoBot {
 		if (mc.player.getDistance(closest) <= range.doubleValue()) {
 			BlockPos p = new BlockPos(closest.posX, closest.posY, closest.posZ);
 			
-			ArrayList<BlockPos> positions = new ArrayList<BlockPos>();
+			ArrayList<BlockPos> positions = new ArrayList<>();
 			positions.add(p.add(1, 0, 0));
 			positions.add(p.add(-1, 0, 0));
 			positions.add(p.add(0, 0, 1));

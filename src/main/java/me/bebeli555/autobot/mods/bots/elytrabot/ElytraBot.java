@@ -11,14 +11,8 @@ import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.rendering.RenderPath;
-import me.bebeli555.autobot.utils.BaritoneUtil;
-import me.bebeli555.autobot.utils.BlockUtil;
-import me.bebeli555.autobot.utils.EatingUtil;
-import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.*;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
-import me.bebeli555.autobot.utils.PlayerUtil;
-import me.bebeli555.autobot.utils.RotationUtil;
-import me.bebeli555.autobot.utils.Timer;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import net.minecraft.init.Items;
@@ -138,7 +132,7 @@ public class ElytraBot extends AutoBot {
 		//Check if the goal is reached and then stop
 		if (BlockUtil.distance(getPlayerPos(), goal) < 15) {
 			mc.world.playSound(getPlayerPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 100.0f, 18.0F, true);
-			sendMessage("Goal reached!", false);
+			MessageUtil.sendChatMessage("Goal reached!");
 			toggleModule();
 			return;
 		}
@@ -151,7 +145,7 @@ public class ElytraBot extends AutoBot {
 				InventoryUtil.clickSlot(38);
 				InventoryUtil.clickSlot(elytraSlot);
 			} else {
-				sendMessage("You need an elytra", true);
+				MessageUtil.sendWarningMessage("You need an elytra");
 				toggleModule();
 				return;
 			}
@@ -159,7 +153,7 @@ public class ElytraBot extends AutoBot {
 		
 		//Toggle off if no fireworks while using firework mode
 		if (flyMode.stringValue().equals("Firework") && !InventoryUtil.hasItem(Items.FIREWORKS)) {
-			sendMessage("You need fireworks as your using firework mode", true);
+			MessageUtil.sendWarningMessage("You need fireworks as your using firework mode");
 			toggleModule();
 			return;
 		}
@@ -273,7 +267,7 @@ public class ElytraBot extends AutoBot {
 						setStatus("Using baritone to walk a bit because we are stuck");
 						useBaritone();
 					} else {
-						sendMessage("We are stuck. UseBaritone setting would help", true);
+						MessageUtil.sendWarningMessage("We are stuck. UseBaritone setting would help");
 						toggleModule();
 						return;
 					}
@@ -478,7 +472,7 @@ public class ElytraBot extends AutoBot {
 			SPacketEntityStatus packet = (SPacketEntityStatus)event.packet;
 			
 			if (packet.getOpCode() == 35 && packet.getEntity(mc.world) == mc.player && toggleOnPop.booleanValue()) {
-				sendMessage("You popped a totem.", false);
+				MessageUtil.sendWarningMessage("You popped a totem.");
 				toggleModule();
 			}
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.utils.MessageUtil;
 
 public class GuiNode extends AutoBot {
 	public static ArrayList<GuiNode> all = new ArrayList<GuiNode>();
@@ -109,11 +110,11 @@ public class GuiNode extends AutoBot {
 			for (AutoBot module : modules) {
 				if (module.name.equals(name)) {
 					if (toggled) {
-						if (!module.disableToggleMessage) sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.GREEN + "ON", false);
+						if (!module.disableToggleMessage) MessageUtil.sendChatMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.GREEN + "ON");
 						module.onEnabled();
 						module.toggled = true;
 					} else {
-						if (!module.disableToggleMessage) sendMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.RED + "OFF", false);
+						if (!module.disableToggleMessage) MessageUtil.sendChatMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.RED + "OFF");
 						module.onDisabled();
 						module.toggled = false;
 					}

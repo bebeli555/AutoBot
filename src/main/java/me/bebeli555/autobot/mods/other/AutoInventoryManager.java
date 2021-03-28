@@ -15,6 +15,7 @@ import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.gui.Settings;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -140,10 +141,10 @@ public class AutoInventoryManager extends AutoBot {
 			}
 			 
 			bw.close();
-			sendMessage("Layout saved successfully", false);	
+			MessageUtil.sendChatMessage("Layout saved successfully");
 		} catch (Exception e) {
 			e.printStackTrace();
-			sendMessage("Error saving layout. More info in ur games log", true);
+			MessageUtil.sendWarningMessage("Error saving layout. More info in ur games log");
 		}
 	}
 	
@@ -152,7 +153,7 @@ public class AutoInventoryManager extends AutoBot {
 		try {
 			File file = new File(Settings.path + "/AutoInventoryManager.txt");
 			if (!file.exists()) {
-				sendMessage("Save a layout first", true);
+				MessageUtil.sendWarningMessage("Save a layout first");
 				toggleModule();
 				return;
 			}
@@ -171,7 +172,7 @@ public class AutoInventoryManager extends AutoBot {
 			
 			scanner.close();
 		} catch (Exception e) {
-			sendMessage("Error reading layout file. More info in ur games log", true);
+			MessageUtil.sendWarningMessage("Error reading layout file. More info in your games log");
 			e.printStackTrace();
 		}
 	}

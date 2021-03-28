@@ -6,6 +6,7 @@ import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,7 @@ public class AutoWither extends AutoBot {
 			public void run() {
 				if (!InventoryUtil.hasBlock(Blocks.SOUL_SAND) || !InventoryUtil.hasItem(Items.SKULL)) {
 					toggleModule();
-					sendMessage("You dont have the required materials to build a wither", true);
+					MessageUtil.sendWarningMessage("You dont have the required materials to build a wither");
 					return;
 				}
 				
@@ -134,7 +135,7 @@ public class AutoWither extends AutoBot {
 					}
 				} else {
 					toggleModule();
-					sendMessage("Couldnt find a suitable spot to build wither in the set radius", true);
+					MessageUtil.sendWarningMessage("Couldnt find a suitable spot to build wither in the set radius");
 					return;
 				}
 				

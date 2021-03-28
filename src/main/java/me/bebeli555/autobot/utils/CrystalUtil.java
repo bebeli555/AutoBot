@@ -85,9 +85,7 @@ public class CrystalUtil extends AutoBot{
              Block ceil = mc.world.getBlockState(pos.add(0, 2, 0)).getBlock();
 
              if (floor == Blocks.AIR && ceil == Blocks.AIR) {
-                 if (mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.add(0, 1, 0))).isEmpty()) {
-                     return true;
-                 }
+                 return mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.add(0, 1, 0))).isEmpty();
              }
          }
 

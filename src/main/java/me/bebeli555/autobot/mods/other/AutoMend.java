@@ -6,6 +6,7 @@ import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import me.bebeli555.autobot.utils.PlayerUtil;
 import me.bebeli555.autobot.utils.RotationUtil;
 import net.minecraft.entity.EntityLiving;
@@ -51,13 +52,13 @@ public class AutoMend extends AutoBot {
 	
 	public void loop() {
 		if (!InventoryUtil.hasItem(Items.EXPERIENCE_BOTTLE)) {
-			sendMessage("No xp bottles in inventory", true);
+			MessageUtil.sendWarningMessage("No xp bottles in inventory");
 			toggleModule();
 			return;
 		}
 		
 		if (!isSolid(getPlayerPos().add(0, -1, 0))) {
-			sendMessage("Block below the player is not solid", true);
+			MessageUtil.sendWarningMessage("Block below the player is not solid");
 			toggleModule();
 			return;
 		}

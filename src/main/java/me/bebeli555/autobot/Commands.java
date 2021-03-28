@@ -8,6 +8,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bebeli555.autobot.gui.Gui;
 import me.bebeli555.autobot.gui.GuiNode;
 import me.bebeli555.autobot.gui.Settings;
+import me.bebeli555.autobot.utils.MessageUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,7 +42,7 @@ public class Commands extends AutoBot {
 				
 				GuiNode guiNode = Settings.getGuiNodeFromId(id);
 				if (guiNode == null) {
-					sendMessage("Cant find setting with id: " + id, true);
+					MessageUtil.sendWarningMessage("Cant find setting with id: " + id);
 				} else {
 					if (guiNode.isTypeable != Settings.isBoolean(value)) {
 						if (!guiNode.isTypeable) {
@@ -53,12 +54,12 @@ public class Commands extends AutoBot {
 								
 								guiNode.stringValue = value;
 							} catch (Exception ex) {
-								sendMessage("Wrong input. This might be caused if u input a string value and the setting only accepts integer or double", true);
+								MessageUtil.sendWarningMessage("Wrong input. This might be caused if u input a string value and the setting only accepts integer or double");
 								return;
 							}
 						}
 						
-						sendMessage("Set " + id + " to " + value, false);
+						MessageUtil.sendChatMessage("Set " + id + " to " + value);
 						
 						if (Settings.isBoolean(value)) {
 							try {
@@ -69,9 +70,9 @@ public class Commands extends AutoBot {
 						}
 					} else {
 						if (guiNode.isTypeable) {
-							sendMessage("This setting requires a boolean value", true);
+							MessageUtil.sendWarningMessage("This setting requires a boolean value");
 						} else {
-							sendMessage("This setting requires a string or integer value", true);
+							MessageUtil.sendWarningMessage("This setting requires a string or integer value");
 						}
 					}
 				}
@@ -83,15 +84,15 @@ public class Commands extends AutoBot {
 				for (GuiNode node : GuiNode.all) {
 					list += node.id.replace(" ", "_") + ", ";
 				}
-				
-				sendMessage(list, false);
+
+				MessageUtil.sendChatMessage(list);
 			}
 			
 			//Help
 			else if (message.equals("help")) {
-				sendMessage(prefix + "gui - Opens the GUI", false);
-				sendMessage(prefix + "set settingId value - sets setting with given id to given value", false);
-				sendMessage(prefix + "list - Gives a list of all the settingIds", false);
+				MessageUtil.sendChatMessage(prefix + "gui - Opens the GUI");
+				MessageUtil.sendChatMessage(prefix + "set settingId value - sets setting with given id to given value");
+				MessageUtil.sendChatMessage(prefix + "list - Gives a list of all the settingIds");
 			}
 			
 			//Create a fakeplayer on ur position (Used for development)
@@ -100,19 +101,19 @@ public class Commands extends AutoBot {
 				fakePlayer.copyLocationAndAnglesFrom(mc.player);
 				fakePlayer.rotationYawHead = mc.player.rotationYawHead;
 				mc.world.addEntityToWorld(-100, fakePlayer);
-				sendMessage("Summoned a fake player ", false);
+				MessageUtil.sendChatMessage("Summoned a fake player ");
 			}
 			
 			//Set custom render distance
 			else if (message.startsWith("renderdistance")) {
 				int value = Integer.parseInt(message.split(" ")[1]);
 				mc.gameSettings.renderDistanceChunks = value;
-				sendMessage("Set render distance to " + value, false);
+				MessageUtil.sendChatMessage("Set render distance to " + value);
 			}
 			
 			//Unknown command
 			else {
-				sendMessage("Unknown command. Type " + ChatFormatting.GREEN + prefix + "help" + ChatFormatting.RED + " for help", true);
+				MessageUtil.sendWarningMessage("Unknown command. Type " + ChatFormatting.GREEN + prefix + "help" + ChatFormatting.RED + " for help");
 			}
 		}
 	}

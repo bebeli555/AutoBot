@@ -5,6 +5,7 @@ import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import me.bebeli555.autobot.utils.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.util.EnumHand;
@@ -73,7 +74,7 @@ public class AutoFirework extends AutoBot {
 		}
 		
 		if (!InventoryUtil.hasItem(Items.FIREWORKS)) {
-			sendMessage("You have no fireworks in inventory", true);
+			MessageUtil.sendWarningMessage("You have no fireworks in inventory");
 			toggleModule();
 			return;
 		}

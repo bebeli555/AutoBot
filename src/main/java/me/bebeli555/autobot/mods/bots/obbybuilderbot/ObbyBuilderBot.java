@@ -7,14 +7,9 @@ import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
-import me.bebeli555.autobot.utils.BaritoneUtil;
+import me.bebeli555.autobot.utils.*;
 import me.bebeli555.autobot.utils.BaritoneUtil.BaritoneSettings;
-import me.bebeli555.autobot.utils.BlockUtil;
-import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
-import me.bebeli555.autobot.utils.MiningUtil;
-import me.bebeli555.autobot.utils.PlayerUtil;
-import me.bebeli555.autobot.utils.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.material.Material;
@@ -49,7 +44,7 @@ public class ObbyBuilderBot extends AutoBot {
 	@Override
 	public void onEnabled() {
 		if (!InventoryUtil.hasBlock(Blocks.ENDER_CHEST)) {
-			sendMessage("You need to have an enderchest in ur inventory", true);
+			MessageUtil.sendWarningMessage("You need to have an enderchest in ur inventory");
 			toggleModule();
 			return;
 		}
@@ -102,19 +97,19 @@ public class ObbyBuilderBot extends AutoBot {
 			BaritoneUtil.forceCancel();
 			
 			if (!MiningUtil.hasPickaxe()) {
-				sendMessage("You need a diamond pickaxe!", true);
+				MessageUtil.sendWarningMessage("You need a diamond pickaxe!");
 				toggleModule();
 				return;
 			}
 			
 			if (mc.player.posY > 255 && !InventoryUtil.hasItem(Items.WATER_BUCKET)) {
-				sendMessage("You need a water bucket!", true);
+				MessageUtil.sendWarningMessage("You need a water bucket!");
 				toggleModule();
 				return;
 			}
 			
 			if (mc.player.posY > 255 && !InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
-				sendMessage("You need atleast 4 obsidian in your inventory!", true);
+				MessageUtil.sendWarningMessage("You need atleast 4 obsidian in your inventory!");
 				toggleModule();
 				return;
 			}
@@ -146,7 +141,7 @@ public class ObbyBuilderBot extends AutoBot {
 			}
 			
 			if (bestPos == null) {
-				sendMessage("Found no suitable place nearby to break echests", true);
+				MessageUtil.sendWarningMessage("Found no suitable place nearby to break echests");
 				toggleModule();
 				return;
 			}
@@ -270,10 +265,10 @@ public class ObbyBuilderBot extends AutoBot {
 					//Get the enderchests from the shulker and break it and place it back to echest
 					if (isSolid(shulker)) {
 						//If shulker position isnt a shulker then mine it as something went wrong
-						if (getBlock(shulker) instanceof BlockShulkerBox == false) {
+						if (!(getBlock(shulker) instanceof BlockShulkerBox)) {
 							setStatus("Mining block where shulker is supposed to be");
 							MiningUtil.mine(shulker, false);
-							continue main;
+							continue;
 						}
 						
 						setStatus("Getting enderchests from shulker");
@@ -337,7 +332,7 @@ public class ObbyBuilderBot extends AutoBot {
 					//Get the shulker from echest
 					else if (!hasShulker()) {
 						ItemStack held = mc.player.inventory.getCurrentItem();
-						if (held != null && held.getDisplayName().equals(shulkerName.stringValue())) {
+						if (held.getDisplayName().equals(shulkerName.stringValue())) {
 							InventoryUtil.clickSlot(8);
 							sleep(150);
 							InventoryUtil.clickSlot(InventoryUtil.getEmptySlot());
@@ -346,7 +341,7 @@ public class ObbyBuilderBot extends AutoBot {
 						}
 						
 						setStatus("Getting shulker from enderchest");
-						if (mc.currentScreen instanceof GuiChest == false) {
+						if (!(mc.currentScreen instanceof GuiChest)) {
 							Vec3d hitVec = new Vec3d(pos).add(0.5, -0.5, 0.5);
 							RotationUtil.rotate(hitVec, true);
 					        mc.playerController.processRightClickBlock(mc.player, mc.world, pos, EnumFacing.NORTH, hitVec, EnumHand.MAIN_HAND);
@@ -369,7 +364,7 @@ public class ObbyBuilderBot extends AutoBot {
 								}
 							}
 							
-							sendMessage("No shulker box with name " + shulkerName.stringValue() + " was found in your enderchest", true);
+							MessageUtil.sendWarningMessage("No shulker box with name " + shulkerName.stringValue() + " was found in your enderchest");
 							toggleModule();
 							return;
 						}

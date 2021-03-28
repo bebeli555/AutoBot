@@ -8,6 +8,7 @@ import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import me.bebeli555.autobot.utils.RotationUtil;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
@@ -34,41 +35,39 @@ public class Burrow extends AutoBot {
 			return;
 		}
 		
-		new Thread() {
-			public void run() {
-				if (!InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
-					sendMessage("You need obsidian", true);
-					toggleModule();
-					return;
-				}
-				
-				if (isSolid(getPlayerPos())) {
-					sendMessage("You are already burrowed", true);
-					toggleModule();
-					return;
-				}
-				
-				//Switch to obsidian
-				InventoryUtil.switchItem(InventoryUtil.getSlot(Blocks.OBSIDIAN), false);
-				
-				//Center
-				Surround.center();
-				
-				//Jump
-				BlockPos start = getPlayerPos();
-				mc.player.jump();
-				
-				//Sleep
-				AutoBot.sleep(delay.intValue());
-
-				//Place block and jump
-				BlockUtil.placeBlock(Blocks.OBSIDIAN, start, true);
-				mc.player.jump();
-				
-				//Cancel force rotation from server
-				AutoBot.EVENT_BUS.subscribe(burrow);
+		new Thread(() -> {
+			if (!InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
+				MessageUtil.sendWarningMessage("You need obsidian");
+				toggleModule();
+				return;
 			}
-		}.start();
+
+			if (isSolid(getPlayerPos())) {
+				MessageUtil.sendWarningMessage("You are already burrowed");
+				toggleModule();
+				return;
+			}
+
+			//Switch to obsidian
+			InventoryUtil.switchItem(InventoryUtil.getSlot(Blocks.OBSIDIAN), false);
+
+			//Center
+			Surround.center();
+
+			//Jump
+			BlockPos start = getPlayerPos();
+			mc.player.jump();
+
+			//Sleep
+			sleep(delay.intValue());
+
+			//Place block and jump
+			BlockUtil.placeBlock(Blocks.OBSIDIAN, start, true);
+			mc.player.jump();
+
+			//Cancel force rotation from server
+			AutoBot.EVENT_BUS.subscribe(burrow);
+		}).start();
 	}
 	
 	@Override

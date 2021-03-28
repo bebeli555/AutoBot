@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import me.bebeli555.autobot.utils.*;
 import org.lwjgl.input.Mouse;
 
 import me.bebeli555.autobot.AutoBot;
@@ -19,10 +20,6 @@ import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.gui.Settings;
 import me.bebeli555.autobot.rendering.RenderBlock;
-import me.bebeli555.autobot.utils.BaritoneUtil;
-import me.bebeli555.autobot.utils.BlockUtil;
-import me.bebeli555.autobot.utils.InventoryUtil;
-import me.bebeli555.autobot.utils.RotationUtil;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import net.minecraft.block.Block;
@@ -88,7 +85,7 @@ public class AutoBuilder extends AutoBot {
 					AutoBot.EVENT_BUS.unsubscribe(autoBuilder);
 					RenderBlock.clear();
 					saveFile();
-					sendMessage("Successfully saved structure!", false);
+					MessageUtil.sendChatMessage("Successfully saved structure!");
 				} else {
 					positions.clear();
 					playerPos = getPlayerPos();
@@ -107,7 +104,7 @@ public class AutoBuilder extends AutoBot {
 			if (!isSolid(pos)) {
 				if (!InventoryUtil.hasBlock(buildPosition.block)) {
 					if (Block.getIdFromBlock(buildPosition.block) != 144 || Block.getIdFromBlock(buildPosition.block) == 144 && !InventoryUtil.hasItem(Items.SKULL)) {
-						sendMessage("You dont have the required materials to build this structure", true);
+						MessageUtil.sendWarningMessage("You dont have the required materials to build this structure");
 						toggleModule();
 						return;
 					}
@@ -168,7 +165,7 @@ public class AutoBuilder extends AutoBot {
 		try {
 			File file = new File(Settings.path + "/AutoBuilder.txt");
 			if (!file.exists()) {
-				sendMessage("Create a structure first", true);
+				MessageUtil.sendWarningMessage("Create a structure first");
 				toggleModule();
 				return;
 			}
@@ -187,7 +184,7 @@ public class AutoBuilder extends AutoBot {
 			
 			scanner.close();
 		} catch (Exception e) {
-			sendMessage("Error reading structure file. More info in your games log", true);
+			MessageUtil.sendWarningMessage("Error reading structure file. More info in your games log");
 			e.printStackTrace();
 		}
 	}
@@ -209,7 +206,7 @@ public class AutoBuilder extends AutoBot {
 			 
 			 bw.close();
 		} catch (Exception e) {
-			sendMessage("Error saving structure. More info in your games log", true);
+			MessageUtil.sendWarningMessage("Error saving structure. More info in your games log");
 			e.printStackTrace();
 		}
 	}

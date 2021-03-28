@@ -7,6 +7,7 @@ import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.MessageUtil;
 import me.bebeli555.autobot.utils.MiningUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -61,11 +62,11 @@ public class AutoEnderChestMiner extends AutoBot {
 		}
 
 		if (!InventoryUtil.hasBlock(Blocks.ENDER_CHEST)) {
-			sendMessage("You dont have any enderchests in your inventory", true);
+			MessageUtil.sendWarningMessage("You dont have any enderchests in your inventory");
 			toggleModule();
 			return;
 		} else if (mc.player.posY > 255) {
-			sendMessage("Cant place enderchests on the build limit", true);
+			MessageUtil.sendWarningMessage("Cant place enderchests on the build limit");
 			toggleModule();
 			return;
 		}
@@ -76,7 +77,7 @@ public class AutoEnderChestMiner extends AutoBot {
 			BlockUtil.placeBlock(Blocks.ENDER_CHEST, availableSpot, true);
 			sleep(delay.intValue());
 		} else {
-			sendMessage("No spot found to place an enderchest nearby", true);
+			MessageUtil.sendWarningMessage("No spot found to place an enderchest nearby");
 			toggleModule();
 		}
 	}
