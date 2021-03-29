@@ -9,6 +9,7 @@ import java.util.List;
 import me.bebeli555.autobot.AutoBot;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -88,7 +89,7 @@ public class BlockUtil extends AutoBot {
 	public static boolean canPlaceBlock(BlockPos pos) {
 		try {
 			for (Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
-				if (!entity.equals(mc.player)) {
+				if (!entity.equals(mc.player) && entity instanceof EntityItem == false) {
 					return false;
 				}
 			}

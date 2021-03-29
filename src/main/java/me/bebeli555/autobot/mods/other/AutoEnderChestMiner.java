@@ -54,7 +54,7 @@ public class AutoEnderChestMiner extends AutoBot {
 				MiningUtil.mine(pos, true);
 				sleep(delay.intValue());
 				return;
-			} else if (!isSolid(pos)) {
+			} else if (BlockUtil.canPlaceBlock(pos) && isSolid(pos.add(0, -1, 0))) {
 				availableSpot = pos;
 				break;
 			}

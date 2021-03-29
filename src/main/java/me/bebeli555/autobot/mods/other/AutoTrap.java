@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class AutoTrap extends AutoBot {
 	public static Thread thread;
+	public static int oldSlot = -1;
 	
 	public static Setting toggle = new Setting(Mode.BOOLEAN, "Toggle", false, "Toggle the module off after a trap");
 	public static Setting range = new Setting(Mode.DOUBLE, "Range", 4, "How far the player can be for autotrap to work");
@@ -46,13 +47,17 @@ public class AutoTrap extends AutoBot {
 	}
 	
 	public void loop() {
+		if (mc.player == null) {
+			return;
+		}
+		
 		if (!InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
 			sendMessage("You dont have any obsidian", true);
 			toggleModule();
 		}
 		
 		EntityPlayer closest = PlayerUtil.getClosest();
-		if (mc.player.getDistance(closest) <= range.doubleValue()) {
+		if (closest != null && mc.player.getDistance(closest) <= range.doubleValue()) {
 			BlockPos p = new BlockPos(closest.posX, closest.posY, closest.posZ);
 			
 			ArrayList<BlockPos> positions = new ArrayList<BlockPos>();
@@ -85,19 +90,25 @@ public class AutoTrap extends AutoBot {
 			double highestDistance = Integer.MIN_VALUE;
 			
 			for (BlockPos pos : positions) {
-				if (!isSolid(pos) && BlockUtil.canBeClicked(pos) && mc.player.getDistanceSq(pos) > highestDistance) {
+				if (BlockUtil.canPlaceBlock(pos) && BlockUtil.canBeClicked(pos) && mc.player.getDistanceSq(pos) > highestDistance) {
 					best = pos;
 					highestDistance = mc.player.getDistanceSq(pos);
 				}
 			}
 			
 			if (best != null) {
-				BlockUtil.placeBlock(Blocks.OBSIDIAN, best, true);
+				if (oldSlot == -1) {
+					oldSlot = mc.player.inventory.currentItem;
+				}
+				
+				BlockUtil.placeBlockNoSleep(Blocks.OBSIDIAN, best, true);
 				sleep(delay.intValue());
 			} else if (toggle.booleanValue()) {
 				toggleModule();
 			} else {
 				RotationUtil.stopRotating();
+				if (oldSlot != -1) mc.player.inventory.currentItem = oldSlot;
+				oldSlot = -1;
 				sleep(25);
 			}
 		}

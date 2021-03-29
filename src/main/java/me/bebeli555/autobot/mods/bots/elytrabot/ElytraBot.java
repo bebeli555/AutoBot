@@ -126,6 +126,7 @@ public class ElytraBot extends AutoBot {
 		PacketFly.toggle(false);
 		ElytraFly.toggle(false);
 		clearStatus();
+		BaritoneUtil.forceCancel();
 		suspend(thread);
 		thread = null;
 	}

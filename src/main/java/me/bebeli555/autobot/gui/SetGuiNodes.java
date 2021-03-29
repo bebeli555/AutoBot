@@ -44,15 +44,13 @@ public class SetGuiNodes {
 						node.group = mainNode.group;
 						node.modeName = setting.modeName;
 						
-						if (!mainNode.id.isEmpty()) {
-							if (setting.parent != null) {
-								GuiNode p = Settings.getGuiNodeFromId(setting.parent.id);
-								node.parent = p;
-								p.parentedNodes.add(node);
-							} else {
-								node.parent = mainNode;
-								mainNode.parentedNodes.add(node);
-							}
+						if (setting.parent != null) {
+							GuiNode p = Settings.getGuiNodeFromId(setting.parent.id);
+							node.parent = p;
+							p.parentedNodes.add(node);
+						} else if (!mainNode.id.isEmpty()) {
+							node.parent = mainNode;
+							mainNode.parentedNodes.add(node);
 						} else {
 							node.isVisible = true;
 						}

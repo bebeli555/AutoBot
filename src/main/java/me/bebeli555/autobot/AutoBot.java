@@ -24,6 +24,7 @@ import me.bebeli555.autobot.mods.other.AutoFirework;
 import me.bebeli555.autobot.mods.other.AutoInventoryManager;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.mods.other.AutoTrap;
+import me.bebeli555.autobot.mods.other.AutoTrapIndicator;
 import me.bebeli555.autobot.mods.other.AutoWither;
 import me.bebeli555.autobot.mods.other.Burrow;
 import me.bebeli555.autobot.rendering.Renderer;
@@ -48,12 +49,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class AutoBot {
     public static final String MODID = "autobot";
     public static final String NAME = "AutoBot";
-    public static final String VERSION = "1.02";
+    public static final String VERSION = "1.03";
     public static final String DISCORD = "discord.gg/xSukBcyd8m";
     
     public static Minecraft mc = Minecraft.getMinecraft();
     public static final EventBus EVENT_BUS = new EventManager();
-    
+
     public String name = "";
     public String[] description;
     public Group group;
@@ -104,6 +105,7 @@ public class AutoBot {
     			new AutoMend();
     			new AutoInventoryManager();
     			new AutoTrap();
+    			new AutoTrapIndicator();
     			new Burrow();
     			
     			new Snake();

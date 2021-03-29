@@ -1,5 +1,6 @@
 package me.bebeli555.autobot.gui;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.net.URI;
@@ -49,20 +50,21 @@ public class Gui extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		//Scale the gui to match the resolution and the gui scale.
+		Dimension resolution = Toolkit.getDefaultToolkit().getScreenSize();
 		GlStateManager.pushMatrix();
-		float guiScale = ((float) (mc.displayWidth / 2) / 960);
+		float guiScale = (float)((float)mc.displayWidth / resolution.getWidth());
 		if (mc.isFullScreen()) {
 			this.setGuiSize(mc.displayWidth / 2, mc.displayHeight / 2);
 		} else {
-			this.setGuiSize((int) (mc.displayWidth * 1.15), (int) (mc.displayHeight * 1.15));
+			this.setGuiSize((int)(mc.displayWidth * 1.15), (int)(mc.displayHeight * 1.15));
 		}
 		
 		if (mc.gameSettings.guiScale == 0) {
-			guiScale += -0.5;
+			guiScale += -0.5 * guiScale;
 		} else if (mc.gameSettings.guiScale == 1) {
-			guiScale += 1;
+			guiScale += 1 * guiScale;
 		} else if (mc.gameSettings.guiScale == 3) {
-			guiScale += -0.3;
+			guiScale += -0.3 * guiScale;
 		}
 		
 		mouseX = (int)(mouseX / guiScale);

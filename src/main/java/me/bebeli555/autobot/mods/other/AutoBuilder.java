@@ -104,7 +104,7 @@ public class AutoBuilder extends AutoBot {
 			BuildPosition buildPosition = positions.get(i);
 			BlockPos pos = getPlayerPos().add(buildPosition.blockPos.getX(), buildPosition.blockPos.getY(), buildPosition.blockPos.getZ());
 			
-			if (!isSolid(pos)) {
+			if (BlockUtil.canPlaceBlock(pos)) {
 				if (!InventoryUtil.hasBlock(buildPosition.block)) {
 					if (Block.getIdFromBlock(buildPosition.block) != 144 || Block.getIdFromBlock(buildPosition.block) == 144 && !InventoryUtil.hasItem(Items.SKULL)) {
 						sendMessage("You dont have the required materials to build this structure", true);

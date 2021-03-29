@@ -1,6 +1,7 @@
 package me.bebeli555.autobot.rendering;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.rendering.RenderBlock.BlockColor;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Renderer extends AutoBot {
 	public static String[] status;
+	public static ArrayList<BlockColor> rectangles = new ArrayList<BlockColor>();
 	
 	@SubscribeEvent
 	public void renderText(RenderGameOverlayEvent.Text e) {
@@ -44,14 +46,20 @@ public class Renderer extends AutoBot {
 				
 				last = pos;
 			}
-		} catch (Exception ignored) {}
-		
-		try {
+			
 			//Render block bounding box
 			for (BlockColor blockColor : RenderBlock.list) {
 				Color c = blockColor.color;
 				RenderUtil.drawBoundingBox(RenderUtil.getBB(blockColor.pos), blockColor.width, c.getRed() / 255, c.getGreen() / 255, c.getBlue() / 255, 1f);
-			}	
-		} catch (Exception ignored) {}
+			}
+			
+			//Render 2d rectangles
+			for (BlockColor rectangle : rectangles) {
+				Color c = rectangle.color;
+				RenderUtil.draw2DRec(RenderUtil.getBB(rectangle.pos), rectangle.width, c.getRed() / 255, c.getGreen() / 255, c.getBlue() / 255, 1f);
+			}
+		} catch (Exception ignored) {
+			
+		}
 	}
 }
