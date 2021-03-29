@@ -1,16 +1,18 @@
 package me.bebeli555.autobot.mods.other;
 
-import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.MessageUtil;
 import me.bebeli555.autobot.utils.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.util.EnumHand;
 
-public class AutoFirework extends AutoBot {
+@RegisterMod(displayName = "AutoFirework", description = "Clicks on fireworks for you when flying with elytra", group = Group.OTHER)
+public class AutoFirework extends Mods {
 	private static Thread thread, thread2;
 	private static boolean lagback;
 	private static int lagbackCounter;
@@ -18,18 +20,14 @@ public class AutoFirework extends AutoBot {
 	public static Setting delay = new Setting(Mode.DOUBLE, "Delay", 2.8, "The delay between clicks on the firework", "In seconds");
 	public static Setting antiLagback = new Setting(Mode.BOOLEAN, "AntiLagback", true, "Doesnt click on a firework if ur lagbacking on 2b2t");
 	
-	public AutoFirework() {
-		super(Group.OTHER, "AutoFirework", "Clicks on fireworks for you when flying with elytra");
-	}
-	
 	@Override
 	public void onEnabled() {
 		thread = new Thread() {
 			public void run() {
-				while(thread != null && thread.equals(this)) {
+				while (thread != null && thread.equals(this)) {
 					loop();
-					
-					AutoBot.sleep(50);
+
+					Mods.sleep(50);
 				}
 			}
 		};
@@ -55,7 +53,7 @@ public class AutoFirework extends AutoBot {
 						}
 					}
 					
-					AutoBot.sleep(50);
+					Mods.sleep(50);
 				}
 			}
 		};

@@ -5,12 +5,13 @@ import java.util.function.Consumer;
 import baritone.api.BaritoneAPI;
 import baritone.api.Settings;
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 
-public class BaritoneUtil extends AutoBot {
+public class BaritoneUtil extends Mods {
 	private static Consumer<ITextComponent> oldValue;
 	
 	/**

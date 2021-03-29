@@ -2,6 +2,8 @@ package me.bebeli555.autobot.mods.games;
 
 import java.util.Random;
 
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import org.lwjgl.input.Keyboard;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -15,7 +17,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
-public class Tetris extends AutoBot {
+@RegisterMod(displayName = "Tetris", description = "Tetris game", group = Group.GAMES)
+public class Tetris extends Mods {
 	public static int fromX, toX;
 	public static int fromY, toY;
 	public static TetrisNode currentNode;
@@ -24,10 +27,6 @@ public class Tetris extends AutoBot {
 	public static int score = 0;
 	public static long lastSec = 0;
 	public static long lastSecMove = 0;
-	
-	public Tetris() {
-		super(Group.GAMES, "Tetris", "Tetris game");
-	}
 	
 	@Override
 	public void onGuiDrawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -44,9 +43,9 @@ public class Tetris extends AutoBot {
 			Divided = 10;
 		}
 		long sec = System.currentTimeMillis() / Divided;
-		if (sec != lastSec && gameOver == false) {
+		if (sec != lastSec && !gameOver) {
 			//Create new node from the top.
-			if (TetrisNode.nodes.isEmpty() || currentNode.canGoDown() == false) {	
+			if (TetrisNode.nodes.isEmpty() || !currentNode.canGoDown()) {
 				score++;
 				BlockPos Player = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 				mc.world.playSound(Player, SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.AMBIENT, 10222.5f, 1.5f, true);
@@ -67,7 +66,7 @@ public class Tetris extends AutoBot {
 		long sec2 = System.currentTimeMillis() / 40;
 		if (sec2 != lastSecMove) {
 			// Move automatically if holding key
-			if (gameOver == false && currentNode != null) {
+			if (!gameOver && currentNode != null) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 					beenDown++;
 					if (beenDown > 3) {
@@ -110,7 +109,7 @@ public class Tetris extends AutoBot {
 		GlStateManager.popMatrix();
 		
 		
-		if (gameOver == true) {
+		if (gameOver) {
 			// GameOver Screen
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(2.5F, 2.5F, 2.5F);
@@ -154,7 +153,7 @@ public class Tetris extends AutoBot {
 	@Override
 	public void onGuiClick(int x, int y, int button) {
 		if (fromX < x && toX > x && fromY < y && toY > y) {
-			if (gameOver == true) {
+			if (gameOver) {
 				startGame();
 			}
 		}
@@ -163,7 +162,7 @@ public class Tetris extends AutoBot {
 	@Override
 	public void onGuiKeyPress(GuiScreenEvent.KeyboardInputEvent.Post e) {
 		//Control tetris block movement
-		if (currentNode == null || gameOver == true) {
+		if (currentNode == null || gameOver) {
 			return;
 		}
 		

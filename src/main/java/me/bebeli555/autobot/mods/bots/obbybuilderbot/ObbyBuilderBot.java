@@ -6,6 +6,8 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.*;
 import me.bebeli555.autobot.utils.BaritoneUtil.BaritoneSettings;
@@ -27,7 +29,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class ObbyBuilderBot extends AutoBot {
+@RegisterMod(displayName = "ObbyBuilderBot", description = {"Builds obsidian structures using baritone", "And mines echests for more obby when out", "Works on schematics that are built on the build limit!"}, group = Group.BOTS)
+public class ObbyBuilderBot extends Mods {
 	private static Thread thread;
 	private static BaritoneSettings baritoneSettings;
 	
@@ -36,10 +39,7 @@ public class ObbyBuilderBot extends AutoBot {
 	public static Setting y = new Setting(Mode.INTEGER, "Y", "", "Y-Coordinate of the schematic");
 	public static Setting z = new Setting(Mode.INTEGER, "Z", "", "Z-Coordinate of the schematic");
 	public static Setting shulkerName = new Setting(Mode.TEXT, "ShulkerName", "", "The exact name of the shulker where you have the echests", "It will take the shulker with the given name to get more echests to mine", "Note: If the shulker has no echests the bot will throw it away");
-	
-	public ObbyBuilderBot() {
-		super(Group.BOTS, "ObbyBuilderBot", "Builds obsidian structures using baritone", "And mines echests for more obby when out", "Works on schematics that are built on the build limit!");
-	}
+
 	
 	@Override
 	public void onEnabled() {

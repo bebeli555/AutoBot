@@ -3,6 +3,7 @@ package me.bebeli555.autobot.mods.bots.crystalpvpbot;
 import java.util.ArrayList;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import me.bebeli555.autobot.utils.BaritoneUtil;
 import me.bebeli555.autobot.utils.BlockUtil;
 import net.minecraft.block.Block;
@@ -10,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
-public class Walker extends AutoBot {
+public class Walker extends Mods {
 	
 	/**
 	 * Walks to the nearest hole that is made out of bedrock or obby

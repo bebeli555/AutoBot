@@ -3,25 +3,26 @@ package me.bebeli555.autobot.mods.bots.elytrabot;
 import java.util.ArrayList;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import me.bebeli555.autobot.utils.BlockUtil;
 import net.minecraft.util.math.BlockPos;
 
-public class AStar extends AutoBot {
+public class AStar extends Mods {
 	public static BlockPos avoid;
 	private static boolean check;
 	
 	/**
 	 * Generates a path to the given goal.
-	 * @goal The goal it will path to
-	 * @positions The nearby positions that can possibly by added to the open list
-	 * @checkPositions The positions it will check not to be solid when iterating the above list
+	 * @param goal The goal it will path to
+	 * @param  positions The nearby positions that can possibly by added to the open list
+	 * @param checkPositions The positions it will check not to be solid when iterating the above list
 	 */
 	public static ArrayList<BlockPos> generatePath(BlockPos start, BlockPos goal, BlockPos[] positions, ArrayList<BlockPos> checkPositions, int loopAmount) {
 		AStarNode.nodes.clear();
 		BlockPos current = start;
 		BlockPos closest = current;
-		ArrayList<BlockPos> open = new ArrayList<BlockPos>();
-		ArrayList<BlockPos> closed = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> open = new ArrayList<>();
+		ArrayList<BlockPos> closed = new ArrayList<>();
 		
 		int noClosest = 0;
 		for (int i = 0; i < loopAmount; i++) {
@@ -74,7 +75,7 @@ public class AStar extends AutoBot {
 			return generatePath(start, closest, positions, checkPositions, loopAmount);
 		} else {
 			check = false;
-			return new ArrayList<BlockPos>();
+			return new ArrayList<>();
 		}
 	}
 	
@@ -169,7 +170,7 @@ public class AStar extends AutoBot {
 				n = AStarNode.getNodeFromBlockpos(n.parent);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			//Ingored. The path is zero in lenght
+			//Ignored. The path is zero in length
 		}
 		
 		return path;

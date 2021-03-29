@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import me.bebeli555.autobot.mods.Mods;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -25,8 +26,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class Gui extends GuiScreen {	
-	private static Minecraft mc = Minecraft.getMinecraft();
-	public static ArrayList<GuiClick> visibleNodes = new ArrayList<GuiClick>();
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	public static ArrayList<GuiClick> visibleNodes = new ArrayList<>();
 	public static boolean isOpen;
 	public static GuiClick selected, description;
 	public static Group dragging;
@@ -217,7 +218,7 @@ public class Gui extends GuiScreen {
 			}
 		}
 		
-		for (AutoBot module : AutoBot.modules) {
+		for (Mods module : AutoBot.modules) {
 			if (module.isToggled()) {
 				module.onGuiDrawScreen(mouseX, mouseY, partialTicks);
 			}
@@ -353,7 +354,7 @@ public class Gui extends GuiScreen {
 			}
 		}
 		
-		for (AutoBot module : AutoBot.modules) {
+		for (Mods module : AutoBot.modules) {
 			if (module.isToggled()) {
 				module.onGuiClick(x, y, button);
 			}
@@ -447,7 +448,7 @@ public class Gui extends GuiScreen {
  			}
 		}
 		
-		for (AutoBot module : AutoBot.modules) {
+		for (Mods module : AutoBot.modules) {
 			if (module.isToggled()) {
 				module.onGuiKeyPress(e);
 			}

@@ -9,6 +9,8 @@ import me.bebeli555.autobot.events.PacketEvent;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.rendering.RenderPath;
 import me.bebeli555.autobot.utils.*;
@@ -27,7 +29,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class ElytraBot extends AutoBot {
+@RegisterMod(displayName = "ElytraBot", description = "Pahfinding for elytras", group = Group.BOTS)
+public class ElytraBot extends Mods {
 	private static Thread thread;
 	private static ArrayList<BlockPos> path;
 	private static BlockPos goal, lastPathPos, previous, lastSecondPos;
@@ -38,10 +41,10 @@ public class ElytraBot extends AutoBot {
 	private static boolean lagback;
 	private static double blocksPerSecond;
 	private static int blocksPerSecondCounter;
-	private static Timer blocksPerSecondTimer = new Timer();
-	private static Timer packetTimer = new Timer();
-	private static Timer fireworkTimer = new Timer();
-	private static Timer takeoffTimer = new Timer();
+	private static final Timer blocksPerSecondTimer = new Timer();
+	private static final Timer packetTimer = new Timer();
+	private static final Timer fireworkTimer = new Timer();
+	private static final Timer takeoffTimer = new Timer();
 	
 	public static Setting mode = new Setting(null, "Mode", "Highway", new String[]{"Overworld", "Pathfinding designed for overworld"}, new String[]{"Highway", "Pathfinding designed for the highways."});
 		public static Setting useBaritone = new Setting(mode, "Highway", Mode.BOOLEAN, "UseBaritone", true, "Uses baritone to walk a bit if stuck or cant find a path", "Then tries to takeoff again");
@@ -60,10 +63,7 @@ public class ElytraBot extends AutoBot {
 		public static Setting minHunger = new Setting(autoEat, Mode.INTEGER, "Hunger", 10, "When hunger goes below or equal to the given amount it will eat food");
 		public static Setting gaps = new Setting(autoEat, Mode.BOOLEAN, "Gaps", true, "Allows the bot to eat gapples");
 	public static Setting toggleOnPop = new Setting(Mode.BOOLEAN, "ToggleOnPop", false, "Toggles the module off", "When you pop a totem");
-	
-	public ElytraBot() {
-		super(Group.BOTS, "ElytraBot", "Pathfinding bot for elytras");
-	}
+
 	
 	@Override
 	public void onEnabled() {
@@ -89,7 +89,7 @@ public class ElytraBot extends AutoBot {
 				while (thread != null && thread.equals(this)) {
 					try {
 						loop();
-					} catch (NullPointerException e) {
+					} catch (NullPointerException ignored) {
 
 					}
 					
@@ -153,14 +153,14 @@ public class ElytraBot extends AutoBot {
 		
 		//Toggle off if no fireworks while using firework mode
 		if (flyMode.stringValue().equals("Firework") && !InventoryUtil.hasItem(Items.FIREWORKS)) {
-			MessageUtil.sendWarningMessage("You need fireworks as your using firework mode");
+			MessageUtil.sendWarningMessage("You need fireworks as you're using firework mode");
 			toggleModule();
 			return;
 		}
 		
 		//Wait still if in unloaded chunk
 		if (!BlockUtil.isInRenderDistance(getPlayerPos())) {
-			setStatus("We are in unloaded chunk. Waiting");
+			setStatus("We are in an unloaded chunk. Waiting");
 			mc.player.setVelocity(0, 0, 0);
 			return;
 		}

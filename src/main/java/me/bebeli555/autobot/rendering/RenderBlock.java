@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import net.minecraft.util.math.BlockPos;
 
 public class RenderBlock {
-	public static ArrayList<BlockColor> list = new ArrayList<BlockColor>();
+	public static ArrayList<BlockColor> list = new ArrayList<>();
 	
 	public static void add(BlockPos pos, Color color, float width) {
 		list.add(new BlockColor(pos, color, width));
 	}
 	
 	public static void remove(BlockPos pos) {
-		ArrayList<BlockColor> remove = new ArrayList<BlockColor>();
+		ArrayList<BlockColor> remove = new ArrayList<>();
 		for (BlockColor blockColor : list) {
 			if (blockColor.pos.equals(pos)) {
 				remove.add(blockColor);

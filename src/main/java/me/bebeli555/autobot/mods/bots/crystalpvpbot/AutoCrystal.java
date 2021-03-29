@@ -1,6 +1,9 @@
 package me.bebeli555.autobot.mods.bots.crystalpvpbot;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.gui.Group;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.BaritoneUtil;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.CrystalUtil;
@@ -14,7 +17,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class AutoCrystal extends AutoBot {
+@RegisterMod(displayName = "AutoCrystal", description = "A module for the crystal pvp bot", group = Group.OTHER)
+public class AutoCrystal extends Mods {
 	public EntityPlayer target;
 	public Thread thread;
 	public static BlockPos placed;
@@ -28,19 +32,17 @@ public class AutoCrystal extends AutoBot {
 	public void toggle(boolean on) {
 		if (on) {
 			if (thread == null) {
-				thread = new Thread() {
-					public void run() {
-						while(true) {
-							try {
-								loop();
-								
-								AutoBot.sleep(35);
-							} catch (Exception ignored) {
-								
-							}
+				thread = new Thread(() -> {
+					while(true) {
+						try {
+							loop();
+
+							AutoBot.sleep(35);
+						} catch (Exception ignored) {
+
 						}
 					}
-				};
+				});
 				
 				thread.start();
 			} else {

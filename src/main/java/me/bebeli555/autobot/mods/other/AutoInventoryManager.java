@@ -13,6 +13,8 @@ import me.bebeli555.autobot.gui.GuiNode.ClickListener;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.gui.Settings;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
 import me.bebeli555.autobot.utils.MessageUtil;
@@ -20,16 +22,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class AutoInventoryManager extends AutoBot {
+@RegisterMod(displayName = "AutoInventoryManager", description = {"Keeps items in ur inventry in the same layout", "As the one you have saved"}, group = Group.OTHER)
+public class AutoInventoryManager extends Mods {
 	public static Thread thread;
-	public static ArrayList<ItemUtil> layout = new ArrayList<ItemUtil>();
+	public static ArrayList<ItemUtil> layout = new ArrayList<>();
 	
 	public static Setting saveLayout = new Setting(Mode.BOOLEAN, "Save Layout", false, "Saves the current inventory layout");
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 150, "Delay in ms between the slot clicks");
-	
-	public AutoInventoryManager() {
-		super(Group.OTHER, "AutoInventoryManager", "Keeps items in ur inventry in the same layout", "As the one you have saved");
-	}
+
 	
 	@Override
 	public void onPostInit() {

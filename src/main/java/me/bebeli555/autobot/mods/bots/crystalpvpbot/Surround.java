@@ -1,13 +1,14 @@
 package me.bebeli555.autobot.mods.bots.crystalpvpbot;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import me.bebeli555.autobot.utils.BaritoneUtil;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
-public class Surround extends AutoBot {
+public class Surround extends Mods {
 	private static long lastToggled;
 	
 	/**

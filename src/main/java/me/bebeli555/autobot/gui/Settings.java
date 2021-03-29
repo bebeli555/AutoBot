@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 
 public class Settings extends AutoBot {
 	public static String path = mc.gameDir.getPath() + "/AutoBot";
@@ -98,7 +99,7 @@ public class Settings extends AutoBot {
 					node.toggled = Boolean.parseBoolean(value);
 					Setting.getSettingWithId(node.id).value = node.toggled;
 					
-					for (AutoBot module : modules) {
+					for (Mods module : modules) {
 						if (module.name.equals(id)) {
 							if (node.toggled) {
 								module.onEnabled();

@@ -6,21 +6,21 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
-public class AutoTrap extends AutoBot {
+@RegisterMod(displayName = "AutoTrap", description = "Traps a nearby player with obsidian", group = Group.OTHER)
+public class AutoTrap extends Mods {
 	public static Thread thread;
 	
 	public static Setting toggle = new Setting(Mode.BOOLEAN, "Toggle", false, "Toggle the module off after a trap");
 	public static Setting range = new Setting(Mode.DOUBLE, "Range", 4, "How far the player can be for autotrap to work");
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 50, "Delay in ms to wait between placing blocks");
-	
-	public AutoTrap() {
-		super(Group.OTHER, "AutoTrap", "Traps the nearby player with obsidian");
-	}
+
 	
 	@Override
 	public void onEnabled() {

@@ -5,6 +5,8 @@ import me.bebeli555.autobot.events.PacketEvent;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
@@ -18,16 +20,16 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.util.math.BlockPos;
 
-public class Burrow extends AutoBot {
+@RegisterMod(displayName = "Burrow", description = "Glitches you inside obsidian", group = Group.OTHER)
+public class Burrow extends Mods {
 	private static Burrow burrow;
 	
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 250, "Delay in ms to wait after the first jump", "To placing the block and second jump");
-	
+
 	public Burrow() {
-		super(Group.OTHER, "Burrow", true, "Glitches you inside obsidian");
 		burrow = this;
 	}
-	
+
 	@Override
 	public void onEnabled() {
 		if (mc.player == null) {

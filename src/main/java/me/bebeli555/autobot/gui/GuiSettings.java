@@ -1,11 +1,11 @@
 package me.bebeli555.autobot.gui;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 
-public class GuiSettings extends AutoBot {
-	public GuiSettings() {
-		super(Group.GUI);
-	}
+@RegisterMod(displayName = "GuiSettings", group = Group.GUI)
+public class GuiSettings extends Mods {
 	
 	public static Setting width = new Setting(Mode.INTEGER, "Width", 110, "Gui node width");
 	public static Setting height = new Setting(Mode.INTEGER, "Height", 18, "Gui node height");

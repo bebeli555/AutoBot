@@ -7,6 +7,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
-public class BlockUtil extends AutoBot {
+public class BlockUtil extends Mods {
 	
 	/**
 	 * Searches around the player to find the given block.
@@ -55,12 +56,7 @@ public class BlockUtil extends AutoBot {
             }
         }
         
-        Collections.sort(list, new Comparator<BlockPos>() {
-            @Override
-            public int compare(BlockPos lhs, BlockPos rhs) {
-                return mc.player.getDistanceSq(lhs) > mc.player.getDistanceSq(rhs) ? 1 : (mc.player.getDistanceSq(lhs) < mc.player.getDistanceSq(rhs)) ? -1 : 0;
-            }
-        });
+        Collections.sort(list, (lhs, rhs) -> mc.player.getDistanceSq(lhs) > mc.player.getDistanceSq(rhs) ? 1 : (mc.player.getDistanceSq(lhs) < mc.player.getDistanceSq(rhs)) ? -1 : 0);
         
         return list;
 	}

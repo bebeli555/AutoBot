@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.*;
 import org.lwjgl.input.Mouse;
 
@@ -26,9 +28,10 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.util.math.BlockPos;
 
-public class AutoBuilder extends AutoBot {
+@RegisterMod(displayName = "AutoBuilder", description = "Builds anything you want relative to the players position", group = Group.OTHER)
+public class AutoBuilder extends Mods {
 	private static Thread thread;
-	private static ArrayList<BuildPosition> positions = new ArrayList<BuildPosition>();
+	private static final ArrayList<BuildPosition> positions = new ArrayList<>();
 	private static boolean check, down;
 	private static BlockPos playerPos;
 	private static AutoBuilder autoBuilder;
@@ -42,7 +45,6 @@ public class AutoBuilder extends AutoBot {
 		public static Setting moveZ = new Setting(move, Mode.INTEGER, "Z", 0, "Z-Coordinate relative to players position");
 		
 	public AutoBuilder() {
-		super(Group.OTHER, "AutoBuilder", "Builds anything you want relative to the players position");
 		autoBuilder = this;
 	}
 	

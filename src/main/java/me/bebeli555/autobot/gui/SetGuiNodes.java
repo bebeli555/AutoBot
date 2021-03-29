@@ -3,6 +3,7 @@ package me.bebeli555.autobot.gui;
 import java.lang.reflect.Field;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 
 public class SetGuiNodes {
 	
@@ -10,7 +11,10 @@ public class SetGuiNodes {
 	//Then checking all the variables in the class and if its an Setting variable add that as a GuiNode
 	public static void setGuiNodes() {
 		try {
-			for (AutoBot module : AutoBot.modules) {
+			for (Mods module : AutoBot.modules) {
+				if (module.hidden) {
+					continue;
+				}
 				GuiNode mainNode;
 				Setting s = null;
 				
@@ -22,7 +26,6 @@ public class SetGuiNodes {
 					mainNode.group = module.group;
 					mainNode.name = module.name;
 					mainNode.description = module.description;
-					mainNode.group = module.group;
 					mainNode.isVisible = true;
 					mainNode.setId();
 					s = new Setting(Mode.BOOLEAN, mainNode.name, false, mainNode.description);

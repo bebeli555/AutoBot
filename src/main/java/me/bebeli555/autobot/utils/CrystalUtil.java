@@ -3,6 +3,7 @@ package me.bebeli555.autobot.utils;
 import java.util.ArrayList;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -18,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 
-public class CrystalUtil extends AutoBot{
+public class CrystalUtil extends Mods {
 	
 	/**
 	 * Gets all the crystals around you if the distance is lower or equal

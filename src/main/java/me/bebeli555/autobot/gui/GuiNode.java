@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.mods.Mods;
 import me.bebeli555.autobot.utils.MessageUtil;
 
 public class GuiNode extends AutoBot {
@@ -107,7 +108,7 @@ public class GuiNode extends AutoBot {
 		if (!this.isTypeable && modes.size() == 0) {
 			toggled = !toggled;
 			
-			for (AutoBot module : modules) {
+			for (Mods module : modules) {
 				if (module.name.equals(name)) {
 					if (toggled) {
 						if (!module.disableToggleMessage) MessageUtil.sendChatMessage(ChatFormatting.LIGHT_PURPLE + module.name + ChatFormatting.WHITE + " toggled " + ChatFormatting.GREEN + "ON");

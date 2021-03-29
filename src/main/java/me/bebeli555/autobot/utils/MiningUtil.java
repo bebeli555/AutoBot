@@ -2,6 +2,7 @@ package me.bebeli555.autobot.utils;
 
 import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.events.PlayerMotionUpdateEvent;
+import me.bebeli555.autobot.mods.Mods;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import net.minecraft.init.Blocks;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
-public class MiningUtil extends AutoBot {
+public class MiningUtil extends Mods {
 	public static MiningUtil miningUtil = new MiningUtil();
 	public static EnumFacing facing;
 	public static BlockPos pos;

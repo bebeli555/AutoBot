@@ -4,6 +4,8 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
 import me.bebeli555.autobot.utils.MessageUtil;
@@ -17,16 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.Vec3d;
 
-public class AutoMend extends AutoBot {
+@RegisterMod(displayName = "AutoMend", description = "Mends your armor and tools using xp bottles", group = Group.OTHER)
+public class AutoMend extends Mods {
 	public static Thread thread;
 	
 	public static Setting armor = new Setting(Mode.BOOLEAN, "Armor", true, "Mends your armor");
 	public static Setting tools = new Setting(Mode.BOOLEAN, "Tools", false, "Mends your tools like pickaxe and others", "Remember to disable your AutoTotem if you want to use this");
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 100, "Delay in ms to wait between the clicks on the XP-Bottle");
-	
-	public AutoMend() {
-		super(Group.OTHER, "AutoMend", "Mends your armor and tools using xp bottles");
-	}
+
 	
 	@Override
 	public void onEnabled() {

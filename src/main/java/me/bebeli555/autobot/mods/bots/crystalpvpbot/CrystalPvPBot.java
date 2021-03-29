@@ -6,6 +6,8 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.utils.BaritoneUtil;
 import me.bebeli555.autobot.utils.BlockUtil;
@@ -27,7 +29,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class CrystalPvPBot extends AutoBot {
+@RegisterMod(displayName = "CrystalPvPBot", description = "A bot that crystalpvps for you", group = Group.BOTS)
+public class CrystalPvPBot extends Mods {
 	public static AutoCrystal autoCrystal = new AutoCrystal(null);
 	public static Thread thread;
 	public static int lastDamageSeconds, triedTraps;
@@ -49,10 +52,6 @@ public class CrystalPvPBot extends AutoBot {
 		public static Setting surroundDelay = new Setting(surround, Mode.INTEGER, "Delay", 50, "Delay in ms it will wait after a successful place");
 	public static Setting autoTotem = new Setting(Mode.LABEL, "AutoTotem", true, "AutoTotem for the bot");
 		public static Setting autoTotemDontMove = new Setting(autoTotem, Mode.BOOLEAN, "Dont move", true, "If true then the bot will not move", "Until it has put a new totem to offhand", "Because some servers like 2b2t will not allow inventory clicks if moving");
-		
-	public CrystalPvPBot() {
-		super(Group.BOTS, "CrystalPvPBot", "A bot that crystalpvps for you", "(Doesnt work very well yet!)");
-	}
 	
 	@Override
 	public void onEnabled() {
@@ -62,7 +61,7 @@ public class CrystalPvPBot extends AutoBot {
 				while(thread != null && thread.equals(this)) {
 					try {
 						loop();
-					} catch (ConcurrentModificationException e) {
+					} catch (ConcurrentModificationException ignored) {
 						
 					}
 					

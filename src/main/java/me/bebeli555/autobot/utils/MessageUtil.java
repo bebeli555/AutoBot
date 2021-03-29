@@ -7,6 +7,8 @@ import net.minecraft.util.text.TextComponentString;
 public class MessageUtil {
     protected static Minecraft mc = Minecraft.getMinecraft();
 
+    // todo: feature to remove the past messages
+
     /**
      * Sends a message that warns the player for something with the AutoBot chat prefix
      * @param msg the message to send
@@ -27,7 +29,6 @@ public class MessageUtil {
      * Sends a clientSided message with a module prefix
      * @param red if true then message will be red if false then it will be some other color
      * @param name of the module it will add in the message
-     * @param remove removes all the past messages made by the mod if true
      */
     public static void sendModuleMessage(String text, String name, boolean red) {
 

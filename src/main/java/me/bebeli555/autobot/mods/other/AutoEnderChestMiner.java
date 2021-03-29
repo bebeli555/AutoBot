@@ -4,6 +4,8 @@ import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
@@ -12,14 +14,12 @@ import me.bebeli555.autobot.utils.MiningUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
-public class AutoEnderChestMiner extends AutoBot {
+@RegisterMod(displayName = "AutoEnderChestMiner", description = "Places and mines enderchests for obsidian", group = Group.OTHER)
+public class AutoEnderChestMiner extends Mods {
 	public static Thread thread;
 	
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 350, "Amount to wait after a place/break in milliseconds");
-	
-	public AutoEnderChestMiner() {
-		super(Group.OTHER, "AutoEnderChestMiner", "Places and mines enderchests for obsidian");
-	}
+
 	
 	@Override
 	public void onEnabled() {

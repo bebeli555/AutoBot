@@ -3,6 +3,8 @@ package me.bebeli555.autobot.mods.games;
 import java.util.ArrayList;
 import java.util.Random;
 
+import me.bebeli555.autobot.mods.Mods;
+import me.bebeli555.autobot.mods.RegisterMod;
 import org.lwjgl.input.Keyboard;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -15,9 +17,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
-public class Snake extends AutoBot {
-	public static ArrayList<Integer> bodyX = new ArrayList<Integer>();
-	public static ArrayList<Integer> bodyY = new ArrayList<Integer>();
+@RegisterMod(displayName = "Snake", description = "Snake game", group = Group.GAMES)
+public class Snake extends Mods {
+	public static ArrayList<Integer> bodyX = new ArrayList<>();
+	public static ArrayList<Integer> bodyY = new ArrayList<>();
 	public static int snakeSize = 0;
 	public static int snakeX, snakeY;
 	public static int lastSnakeX, lastSnakeY;
@@ -31,10 +34,7 @@ public class Snake extends AutoBot {
 	
 	public static int x = mc.displayWidth / 4;
 	public static int y = mc.displayHeight / 5;
-	
-	public Snake() {
-		super(Group.GAMES, "Snake", "Snake game");
-	}
+
 	
 	@Override
 	public void onGuiDrawScreen(int mouseX, int mouseY, float partialTicks) {
