@@ -47,7 +47,7 @@ public class BlockUtil extends Mods {
 	 * Gets all the BlockPositions in the given radius around the player
 	 */
 	public static List<BlockPos> getAll(int radius) {
-		List<BlockPos> list = new ArrayList<BlockPos>();
+		List<BlockPos> list = new ArrayList<>();
         for (int x = (int) (mc.player.posX - radius); x < mc.player.posX + radius; x++) {
             for (int z = (int) (mc.player.posZ - radius); z < mc.player.posZ + radius; z++) {
                 for (int y = (int) (mc.player.posY + radius); y > mc.player.posY - radius; y--) {

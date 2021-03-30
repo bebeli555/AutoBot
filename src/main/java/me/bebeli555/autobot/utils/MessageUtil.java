@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 
 public class MessageUtil {
+    // todo: feature to remove all past messages from the mod
+
     protected static Minecraft mc = Minecraft.getMinecraft();
 
     // todo: feature to remove the past messages

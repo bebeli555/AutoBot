@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class AutoTotem extends AutoBot {
-	private static AutoTotem autoTotem = new AutoTotem();
+	private static final AutoTotem autoTotem = new AutoTotem();
 	
 	/**
 	 * Toggle off or on. It will stay on until toggled off
