@@ -12,7 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 public class AutoEnderChestMiner extends AutoBot {
-	public static Thread thread;
+	private static Thread thread;
 	
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 350, "Amount to wait after a place/break in milliseconds");
 	
@@ -43,6 +43,10 @@ public class AutoEnderChestMiner extends AutoBot {
 	}
 	
 	public void loop() {
+		if (mc.player == null) {
+			return;
+		}
+		
 		BlockPos[] placements = new BlockPos[] {new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1),
 											    new BlockPos(1, 1, 0), new BlockPos(-1, 1, 0), new BlockPos(0, 1, 1), new BlockPos(0, 1, -1)};
 		BlockPos availableSpot = null;

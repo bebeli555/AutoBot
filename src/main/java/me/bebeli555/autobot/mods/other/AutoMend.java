@@ -50,6 +50,10 @@ public class AutoMend extends AutoBot {
 	}
 	
 	public void loop() {
+		if (mc.player == null) {
+			return;
+		}
+		
 		if (!InventoryUtil.hasItem(Items.EXPERIENCE_BOTTLE)) {
 			sendMessage("No xp bottles in inventory", true);
 			toggleModule();

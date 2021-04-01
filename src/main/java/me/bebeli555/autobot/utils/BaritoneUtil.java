@@ -12,19 +12,23 @@ import net.minecraft.util.text.ITextComponent;
 
 public class BaritoneUtil extends AutoBot {
 	private static Consumer<ITextComponent> oldValue;
+	private static long lastCommand;
 	
 	/**
 	 * Send a baritone command without the baritone chat message
 	 */
 	public static void sendCommand(String command) {
+		long ms = System.currentTimeMillis();
+		lastCommand = ms;
+		
 		if (oldValue == null) oldValue = BaritoneAPI.getSettings().logger.value;
-		//BaritoneAPI.getSettings().logger.value = (component) -> {};
+		BaritoneAPI.getSettings().logger.value = (component) -> {};
 		BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute(command);
 		
 		new Thread() {
 			public void run() {
-				AutoBot.sleep(50);
-				BaritoneAPI.getSettings().logger.value = oldValue;
+				AutoBot.sleep(250);
+				if (ms == lastCommand) BaritoneAPI.getSettings().logger.value = oldValue;
 			}
 		}.start();
 	}

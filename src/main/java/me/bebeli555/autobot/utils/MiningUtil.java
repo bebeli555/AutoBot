@@ -47,6 +47,27 @@ public class MiningUtil extends AutoBot {
 	}
 	
 	/**
+	 * Mines the block even if you dont have a pickaxe
+	 */
+	public static void mineAnyway(BlockPos pos, boolean spoofRotation) {
+		if (hasPickaxe()) {
+			InventoryUtil.switchItem(InventoryUtil.getSlot(Items.DIAMOND_PICKAXE), false);
+		}
+		
+		MiningUtil.pos = pos;
+		facing = getFacing(pos);
+		start = true;
+		MiningUtil.spoofRotation = spoofRotation;
+		
+		isMining = true;
+		AutoBot.EVENT_BUS.subscribe(miningUtil);
+		sleepUntil(() -> !isSolid(pos), 15000);
+		AutoBot.EVENT_BUS.unsubscribe(miningUtil);
+		isMining = false;
+		RotationUtil.stopRotating();
+	}
+	
+	/**
 	 * Mines the blockpos without switching items
 	 */
 	public static boolean mineWithoutSwitch(BlockPos pos) {

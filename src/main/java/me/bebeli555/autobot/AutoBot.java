@@ -25,8 +25,9 @@ import me.bebeli555.autobot.mods.other.AutoInventoryManager;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.mods.other.AutoTrap;
 import me.bebeli555.autobot.mods.other.AutoTrapIndicator;
-import me.bebeli555.autobot.mods.other.AutoWither;
+import me.bebeli555.autobot.mods.other.AutoWeb;
 import me.bebeli555.autobot.mods.other.Burrow;
+import me.bebeli555.autobot.mods.other.CrystalBlock;
 import me.bebeli555.autobot.rendering.Renderer;
 import me.bebeli555.autobot.utils.EatingUtil;
 import me.zero.alpine.EventBus;
@@ -49,7 +50,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class AutoBot {
     public static final String MODID = "autobot";
     public static final String NAME = "AutoBot";
-    public static final String VERSION = "1.03";
+    public static final String VERSION = "1.04";
     public static final String DISCORD = "discord.gg/xSukBcyd8m";
     
     public static Minecraft mc = Minecraft.getMinecraft();
@@ -93,12 +94,13 @@ public class AutoBot {
     	    	MinecraftForge.EVENT_BUS.register(new Keybind());
     	    	MinecraftForge.EVENT_BUS.register(new EatingUtil());
     	    	
+    			new GuiSettings();
+    	    	
     	    	new CrystalPvPBot();
     	    	new ElytraBot();
     	    	new ObbyBuilderBot();
     	    	
-    			new GuiSettings();
-    			new AutoWither();
+    			//new AutoWither();
     			new AutoFirework();
     			new AutoEnderChestMiner();
     			new AutoBuilder();
@@ -106,6 +108,8 @@ public class AutoBot {
     			new AutoInventoryManager();
     			new AutoTrap();
     			new AutoTrapIndicator();
+    			new AutoWeb();
+    			new CrystalBlock();
     			new Burrow();
     			
     			new Snake();

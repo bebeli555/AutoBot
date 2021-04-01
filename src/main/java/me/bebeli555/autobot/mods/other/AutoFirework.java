@@ -37,20 +37,22 @@ public class AutoFirework extends AutoBot {
 		thread2 = new Thread() {
 			public void run() {
 				while (thread2 != null && thread2.equals(this)) {
-					double speed = PlayerUtil.getSpeed(mc.player);
-					if (speed > 4) {
-						lagback = true;
-					}
-					
-					if (lagback) {
-						if (speed < 1) {
-							lagbackCounter++;
-							if (lagbackCounter > 4) {
-								lagback = false;
+					if (mc.player != null) {
+						double speed = PlayerUtil.getSpeed(mc.player);
+						if (speed > 4) {
+							lagback = true;
+						}
+						
+						if (lagback) {
+							if (speed < 1) {
+								lagbackCounter++;
+								if (lagbackCounter > 4) {
+									lagback = false;
+									lagbackCounter = 0;
+								}
+							} else {
 								lagbackCounter = 0;
 							}
-						} else {
-							lagbackCounter = 0;
 						}
 					}
 					

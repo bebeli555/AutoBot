@@ -89,7 +89,7 @@ public class BlockUtil extends AutoBot {
 	public static boolean canPlaceBlock(BlockPos pos) {
 		try {
 			for (Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
-				if (!entity.equals(mc.player) && entity instanceof EntityItem == false) {
+				if (entity instanceof EntityItem == false) {
 					return false;
 				}
 			}
@@ -97,7 +97,11 @@ public class BlockUtil extends AutoBot {
 			
 		}
 		
-		return !isSolid(pos);
+		if (!isSolid(pos) && canBeClicked(pos)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -116,6 +120,9 @@ public class BlockUtil extends AutoBot {
 		new Place(null, block, pos, spoofRotation);
 	}
 	
+	public static void placeBlockOnThisThread(Block block, BlockPos pos, boolean spoofRotation) {
+		new Place(null, block, pos, spoofRotation).onTick(null);
+	}
 	/**
 	 * Same as the placeBlock but it interacts with the given block with the given item
 	 * This is run on the client thread

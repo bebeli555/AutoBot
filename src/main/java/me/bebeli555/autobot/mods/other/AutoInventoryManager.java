@@ -79,7 +79,7 @@ public class AutoInventoryManager extends AutoBot {
 	}
 	
 	public void loop() {
-		if (mc.player.inventory.getItemStack().getItem() != Items.AIR) {
+		if (mc.player == null) {
 			return;
 		}
 		

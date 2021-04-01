@@ -3,12 +3,15 @@ package me.bebeli555.autobot.mods.bots.elytrabot;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import com.mojang.realmsclient.gui.ChatFormatting;
+
 import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.events.PacketEvent;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
+import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.mods.other.AutoMend;
 import me.bebeli555.autobot.rendering.RenderPath;
 import me.bebeli555.autobot.utils.BaritoneUtil;
@@ -16,11 +19,13 @@ import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.EatingUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
+import me.bebeli555.autobot.utils.MiningUtil;
 import me.bebeli555.autobot.utils.PlayerUtil;
 import me.bebeli555.autobot.utils.RotationUtil;
 import me.bebeli555.autobot.utils.Timer;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -36,11 +41,11 @@ import net.minecraft.util.math.Vec3d;
 public class ElytraBot extends AutoBot {
 	private static Thread thread;
 	private static ArrayList<BlockPos> path;
-	private static BlockPos goal, lastPathPos, previous, lastSecondPos;
+	private static BlockPos goal, previous, lastSecondPos;
 	private static Direction direction;
 	private static int x, z;
 	private static double jumpY = -1;
-	private static int packetsSent, avoidsDone, lagbackCounter, useBaritoneCounter;
+	private static int packetsSent, lagbackCounter, useBaritoneCounter;
 	private static boolean lagback;
 	private static double blocksPerSecond;
 	private static int blocksPerSecondCounter;
@@ -49,7 +54,7 @@ public class ElytraBot extends AutoBot {
 	private static Timer fireworkTimer = new Timer();
 	private static Timer takeoffTimer = new Timer();
 	
-	public static Setting mode = new Setting(null, "Mode", "Highway", new String[]{"Overworld", "Pathfinding designed for overworld"}, new String[]{"Highway", "Pathfinding designed for the highways."});
+	public static Setting mode = new Setting(null, "Mode", "Highway", new String[]{"Overworld", "Pathfinding designed for overworld"}, new String[]{"Highway", "Pathfinding designed for the highways."}, new String[]{"Tunnel", "For 2x1 tunnels", "Also mines above block if its preventing takeoff"});
 		public static Setting useBaritone = new Setting(mode, "Highway", Mode.BOOLEAN, "UseBaritone", true, "Uses baritone to walk a bit if stuck or cant find a path", "Then tries to takeoff again");
 			public static Setting useBaritoneBlocks = new Setting(useBaritone, Mode.INTEGER, "Blocks", 20, "Amount of blocks to walk from current position");
 	public static Setting takeoffMode = new Setting(null, "Takeoff", "SlowGlide", new String[]{"PacketFly", "Uses packetfly for takeoff"}, new String[]{"Jump", "Just jumps and tries to open the elytra", "Only works if the server has really good tps"}, new String[]{"SlowGlide", "Glides slowly down giving more time to open elytra"});
@@ -112,10 +117,8 @@ public class ElytraBot extends AutoBot {
 	@Override
 	public void onDisabled() {
 		AutoBot.EVENT_BUS.unsubscribe(this);
-		AStar.avoid = null;
 		direction = null;
 		path = null;
-		lastPathPos = null;
 		useBaritoneCounter = 0;
 		lagback = false;
 		lagbackCounter = 0;
@@ -208,6 +211,24 @@ public class ElytraBot extends AutoBot {
 			if (mc.player.onGround && isSolid(getPlayerPos().add(0, 2, 0)) && useBaritone.booleanValue() && mode.stringValue().equals("Highway")) {
 				setStatus("Using baritone because a block above is preventing takeoff");
 				useBaritone();
+			}
+			
+			//Mine above block in tunnel mode
+			if (isSolid(getPlayerPos().add(0, 2, 0)) && mode.stringValue().equals("Tunnel")) {
+				if (getBlock(getPlayerPos().add(0, 2, 0)) != Blocks.BEDROCK) {
+					setStatus("Mining above block so we can takeoff");
+					Surround.center();
+					MiningUtil.mineAnyway(getPlayerPos().add(0, 2, 0), false);
+				} else {
+					if (useBaritone.booleanValue()) {
+						setStatus("Using baritone to walk because above block is bedrock");
+						useBaritone();
+					} else {
+						sendMessage("Above block is bedrock and usebaritone is false", true);
+						toggleModule();
+						return;
+					}
+				}
 			}
 			
 			//Use baritone to get back into path if we have fallen off the highway or something
@@ -337,7 +358,7 @@ public class ElytraBot extends AutoBot {
 		}
 		
 		//Generate more path
-		if (path == null || path.size() <= 20) {
+		if (path == null || path.size() <= 20 || isNextPathTooFar()) {
 			generatePath();
 		}
 		
@@ -394,9 +415,7 @@ public class ElytraBot extends AutoBot {
 					addToStatus("Estimated fireworks needed: " + ChatFormatting.GOLD + (int)(seconds / fireworkDelay.doubleValue()), 2);
 				}
 			}
-			
-			lastPathPos = path.get(0);
-			
+
 			if (flyMode.stringValue().equals("Firework")) {
 				//Rotate head to next position
 				RotationUtil.rotate(new Vec3d(path.get(path.size() - 1)).add(0.5, 0.5, 0.5), false);
@@ -414,12 +433,17 @@ public class ElytraBot extends AutoBot {
 	
 	//Generate path
 	public void generatePath() {
+		//The positions the AStar algorithm is allowed to move from current.
+		BlockPos[] positions = {new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1),
+								new BlockPos(1, 0, 1), new BlockPos(-1, 0, -1), new BlockPos(-1, 0, 1), new BlockPos(1, 0, -1),
+								new BlockPos(0, -1, 0), new BlockPos(0, 1, 0)};
+		
 		ArrayList<BlockPos> checkPositions = new ArrayList<BlockPos>();
 		if (mode.stringValue().equals("Highway")) {
 			BlockPos[] list = {new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1),
 							   new BlockPos(1, 0, 1), new BlockPos(-1, 0, -1), new BlockPos(-1, 0, 1), new BlockPos(1, 0, -1)};
 			checkPositions = new ArrayList<BlockPos>(Arrays.asList(list));
-		} else {
+		} else if (mode.stringValue().equals("Overworld")) {
 			int radius = 3;
 	        for (int x = (int) (-radius); x < radius; x++) {
 	            for (int z = (int) (-radius); z < radius; z++) {
@@ -428,21 +452,23 @@ public class ElytraBot extends AutoBot {
 	                }
 	            }
 	        }
+		} else if (mode.stringValue().equals("Tunnel")) {
+			positions = new BlockPos[]{new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1)};
+			checkPositions = new ArrayList<BlockPos>(Arrays.asList(new BlockPos[]{new BlockPos(0, -1, 0)}));
 		}
 		
-		//The positions the AStar algorithm is allowed to move from current.
-		BlockPos[] positions = {new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1),
-								new BlockPos(1, 0, 1), new BlockPos(-1, 0, -1), new BlockPos(-1, 0, 1), new BlockPos(1, 0, -1),
-								new BlockPos(0, -1, 0), new BlockPos(0, 1, 0)};
-		
-		if (path == null || path.size() == 0 || mc.player.onGround) {
+		if (path == null || path.size() == 0 || isNextPathTooFar() || mc.player.onGround) {
 			BlockPos start;
-			if (!mode.stringValue().equals("Highway")) {
+			if (mode.stringValue().equals("Overworld")) {
 				start = getPlayerPos().add(0, 4, 0);
 			} else if (Math.abs(jumpY - mc.player.posY) <= 2) {
 				start = new BlockPos(mc.player.posX, jumpY + 1, mc.player.posZ);
 			} else {
 				start = getPlayerPos().add(0, 1, 0);
+			}
+			
+			if (isNextPathTooFar()) {
+				start = getPlayerPos();
 			}
 			
 			path = AStar.generatePath(start, goal, positions, checkPositions, 500);
@@ -455,19 +481,6 @@ public class ElytraBot extends AutoBot {
 			}
 			
 			path = temp;
-		}
-		
-		//If empty path then generate a new one that tries to avoid the block
-		if (path.isEmpty() && !mode.stringValue().equals("Highway")) {
-			AStar.avoid = lastPathPos;
-			
-			avoidsDone++;
-			if (avoidsDone > 3) {
-				avoidsDone = 0;
-				AStar.avoid = null;
-			}
-			
-			path = AStar.generatePath(lastPathPos, goal, positions, checkPositions, 500);
 		}
 		
 		RenderPath.setPath(path, new Color(255, 0, 0, 150));
@@ -547,6 +560,14 @@ public class ElytraBot extends AutoBot {
 			return new BlockPos(mc.player.posX + 42042069, mc.player.posY + up, mc.player.posZ - 42042069);
 		} else {
 			return new BlockPos(mc.player.posX - 42042069, mc.player.posY + up, mc.player.posZ + 42042069);
+		}
+	}
+	
+	public static boolean isNextPathTooFar() {
+		try {
+			return BlockUtil.distance(getPlayerPos(), path.get(path.size() - 1)) > 15;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }

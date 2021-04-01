@@ -1,7 +1,6 @@
 package me.bebeli555.autobot.mods.other;
 
 import me.bebeli555.autobot.AutoBot;
-import me.bebeli555.autobot.utils.BlockUtil.Place;
 import me.bebeli555.autobot.events.PacketEvent;
 import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
@@ -9,10 +8,13 @@ import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.InventoryUtil;
+import me.bebeli555.autobot.utils.InventoryUtil.ItemStackUtil;
 import me.bebeli555.autobot.utils.RotationUtil;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.network.play.client.CPacketConfirmTeleport;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class Burrow extends AutoBot {
 	private static Burrow burrow;
 	private static boolean done;
+	private static Block placeBlock;
 	
 	public static Setting mode = new Setting(null, "Mode", "Instant", new String[]{"Instant", "Places the block instantly"}, new String[]{"Jump", "Jumps and places the block"});
 		public static Setting delay = new Setting(mode, "Jump", Mode.INTEGER, "Delay", 250, "Delay in ms to wait after the first jump", "To placing the block and second jump");
@@ -42,31 +45,56 @@ public class Burrow extends AutoBot {
 		}
 		
 		new Thread() {
-			public void run() {
-				if (!InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
-					sendMessage("You need obsidian", true);
-					toggleModule();
-					return;
-				}
-				
+			public void run() {				
 				if (isSolid(getPlayerPos())) {
 					sendMessage("You are already burrowed", true);
 					toggleModule();
 					return;
 				}
 				
+				Block block = null;
 				
-				//Switch to obsidian
+				//If the player has obsidian then use that as its the best
+				if (InventoryUtil.hasBlock(Blocks.OBSIDIAN)) {
+					block = Blocks.OBSIDIAN;
+				} else {
+					//First search the hotbar for blocks
+					for (int i = 0; i < 9; i++) {
+						if (InventoryUtil.getItemStack(i).getItem() instanceof ItemBlock) {
+							block = Block.getBlockFromItem(InventoryUtil.getItemStack(i).getItem());
+							break;
+						}
+					}
+					
+					//Then search the entire inventory if no blocks were in hotbar
+					if (block == null) {
+						for (ItemStackUtil itemStack : InventoryUtil.getAllItems()) {
+							if (itemStack.itemStack.getItem() instanceof ItemBlock) {
+								block = Block.getBlockFromItem(itemStack.itemStack.getItem());
+								break;
+							}
+						}
+					}
+				}
+				
+				if (block == null) {
+					sendMessage("You dont have any placeable block", true);
+					toggleModule();
+					return;
+				}
+				
+				//Switch to block
 				int oldSlot = mc.player.inventory.currentItem;
-				InventoryUtil.switchItem(InventoryUtil.getSlot(Blocks.OBSIDIAN), false);
+				InventoryUtil.switchItem(InventoryUtil.getSlot(block), false);
 				
 				//Center
 				if (center.booleanValue()) {
 					Surround.center();
 				}
 				
-				//Instant mode. this is run on the client thread.
+				//Instant mode. this is run on the minecraft thread.
 				if (mode.stringValue().equals("Instant")) {
+					placeBlock = block;
 					MinecraftForge.EVENT_BUS.register(burrow);
 					sleepUntil(() -> done, 200, 5);
 				} 
@@ -76,7 +104,7 @@ public class Burrow extends AutoBot {
 					BlockPos start = getPlayerPos();
 					mc.player.jump();
 					AutoBot.sleep(delay.intValue());
-					BlockUtil.placeBlock(Blocks.OBSIDIAN, start, true);
+					BlockUtil.placeBlock(block, start, true);
 					mc.player.jump();
 				}
 				
@@ -90,6 +118,12 @@ public class Burrow extends AutoBot {
 		}.start();
 	}
 	
+	@Override
+	public void onDisabled() {
+		RotationUtil.stopRotating();
+		done = false;
+	}
+	
 	@SubscribeEvent
 	public void onTick(ClientTickEvent e) {
 		BlockPos start = getPlayerPos();
@@ -100,17 +134,12 @@ public class Burrow extends AutoBot {
         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.16610926093821D, mc.player.posZ, true));
         mc.player.setPosition(mc.player.posX, mc.player.posY + 1.16610926093821D, mc.player.posZ);
         
-        new Place(null, Blocks.OBSIDIAN, start, true).onTick(null);
+        BlockUtil.placeBlockOnThisThread(placeBlock, start, true);
         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 10, mc.player.posZ, false));
+        mc.player.setPosition(mc.player.posX, start.getY(), mc.player.posZ);
         
         MinecraftForge.EVENT_BUS.unregister(burrow);
         done = true;
-	}
-	
-	@Override
-	public void onDisabled() {
-		RotationUtil.stopRotating();
-		done = false;
 	}
 	
     @EventHandler

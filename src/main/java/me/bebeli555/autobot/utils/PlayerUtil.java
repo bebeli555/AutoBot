@@ -90,6 +90,10 @@ public class PlayerUtil extends AutoBot {
 		return new Vec3d(mc.player.posX, mc.player.posY, mc.player.posZ).distanceTo(new Vec3d(mc.player.lastTickPosX, mc.player.lastTickPosY, mc.player.lastTickPosZ));
 	}
 	
+	public static boolean isMoving(Entity entity) {
+		return getSpeed(entity) == 0;
+	}
+	
 	@SubscribeEvent
 	public void onTick(ClientTickEvent e) {
 		mc.playerController.processRightClick(mc.player, mc.world, EnumHand.MAIN_HAND);

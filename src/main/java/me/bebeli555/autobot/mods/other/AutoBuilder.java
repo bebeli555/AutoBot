@@ -100,6 +100,10 @@ public class AutoBuilder extends AutoBot {
 	}
 	
 	public void loop() {
+		if (mc.player == null) {
+			return;
+		}
+		
 		for (int i = 0; i < positions.size(); i++) {
 			BuildPosition buildPosition = positions.get(i);
 			BlockPos pos = getPlayerPos().add(buildPosition.blockPos.getX(), buildPosition.blockPos.getY(), buildPosition.blockPos.getZ());

@@ -1,6 +1,7 @@
 package me.bebeli555.autobot.mods.other;
 
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.gui.Group;
 import me.bebeli555.autobot.gui.Mode;
 import me.bebeli555.autobot.gui.Setting;
 import me.bebeli555.autobot.mods.bots.crystalpvpbot.Surround;
@@ -19,7 +20,7 @@ public class AutoWither extends AutoBot {
 	public static Setting nametag = new Setting(Mode.BOOLEAN, "Nametag", false, "Puts a nametag to the wither after it spawns");
 	
 	public AutoWither() {
-		//super(Group.OTHER, "AutoWither", "Builds a wither to an available spot nearby", "With the best shape and position possible!");
+		super(Group.OTHER, "AutoWither", "Builds a wither to an available spot nearby", "With the best shape and position possible!");
 	}
 	
 	@Override

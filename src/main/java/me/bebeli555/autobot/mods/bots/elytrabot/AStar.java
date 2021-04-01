@@ -7,7 +7,6 @@ import me.bebeli555.autobot.utils.BlockUtil;
 import net.minecraft.util.math.BlockPos;
 
 public class AStar extends AutoBot {
-	public static BlockPos avoid;
 	private static boolean check;
 	
 	/**
@@ -133,10 +132,6 @@ public class AStar extends AutoBot {
 		double dz = goal.getZ() - pos.getZ();
 		double h = Math.sqrt(dx * dx + dz * dz);
 		double fCost = gCost(pos, start) + h;
-		
-		if (avoid != null) {
-			fCost -= BlockUtil.distance(pos, avoid);
-		}
 		
 		return fCost;
 	}
