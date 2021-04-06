@@ -86,7 +86,7 @@ public class MiningUtil extends AutoBot {
 		if (mc.player == null || getBlock(pos) == Blocks.AIR) {
 			return;
 		}
-        
+		
 		if (spoofRotation) {
 			RotationUtil.rotateSpoof(new Vec3d(pos).add(0.5, 0.5, 0.5).add(new Vec3d(facing.getDirectionVec()).scale(0.5)));
 		} else {

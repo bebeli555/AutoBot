@@ -26,7 +26,7 @@ public class Tetris extends AutoBot {
 	public static long lastSecMove = 0;
 	
 	public Tetris() {
-		super(Group.GAMES, "Tetris", "Tetris game");
+		super(Group.GAMES, "Tetris", true, "Tetris game");
 	}
 	
 	@Override

@@ -343,7 +343,18 @@ public class Gui extends GuiScreen {
 			if (guiClick.x < x && guiClick.x2 > x && guiClick.y < y && guiClick.y2 > y) {
 				if (button == 1) {
 					if (!guiClick.guiNode.parentedNodes.isEmpty()) {
-						guiClick.guiNode.extend(!guiClick.guiNode.parentedNodes.get(0).isVisible);
+						int index = 0;
+						if (!guiClick.guiNode.modes.isEmpty()) {
+							for (int i = 0; i < guiClick.guiNode.parentedNodes.size(); i++) {
+								GuiNode node = guiClick.guiNode.parentedNodes.get(i);
+								if (!node.modeName.isEmpty() && node.modeName.equals(guiClick.guiNode.stringValue)) {
+									index = i;
+									break;
+								}
+							}
+						}
+						
+						guiClick.guiNode.extend(!guiClick.guiNode.parentedNodes.get(index).isVisible);
 					}
 				} else {
 					if (guiClick.guiNode.isTypeable) {

@@ -68,6 +68,10 @@ public class Setting {
 	}
 	
 	public int intValue() {
+		if (stringValue().isEmpty()) {
+			return -1;
+		}
+		
 		try {
 			return (int)value;
 		} catch (ClassCastException e) {
@@ -88,6 +92,10 @@ public class Setting {
 	}
 	
 	public double doubleValue() {
+		if (stringValue().isEmpty()) {
+			return -1;
+		}
+		
 		try {
 			return (double)value;
 		} catch (Exception e) {

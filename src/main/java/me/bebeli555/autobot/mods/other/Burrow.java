@@ -24,12 +24,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class Burrow extends AutoBot {
-	private static Burrow burrow;
+	public static Burrow burrow;
 	private static boolean done;
 	private static Block placeBlock;
 	
 	public static Setting mode = new Setting(null, "Mode", "Instant", new String[]{"Instant", "Places the block instantly"}, new String[]{"Jump", "Jumps and places the block"});
 		public static Setting delay = new Setting(mode, "Jump", Mode.INTEGER, "Delay", 250, "Delay in ms to wait after the first jump", "To placing the block and second jump");
+		public static Setting height = new Setting(mode, "Instant", Mode.DOUBLE, "Height", 10, "How many blocks to teleport up after placing", "The block to trigger tha anticheat");
 	public static Setting center = new Setting(Mode.BOOLEAN, "Center", true, "Centers you in the middle of the block before doing the thing");
 	
 	public Burrow() {
@@ -135,8 +136,8 @@ public class Burrow extends AutoBot {
         mc.player.setPosition(mc.player.posX, mc.player.posY + 1.16610926093821D, mc.player.posZ);
         
         BlockUtil.placeBlockOnThisThread(placeBlock, start, true);
-        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 10, mc.player.posZ, false));
         mc.player.setPosition(mc.player.posX, start.getY(), mc.player.posZ);
+        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + height.doubleValue(), mc.player.posZ, false));
         
         MinecraftForge.EVENT_BUS.unregister(burrow);
         done = true;

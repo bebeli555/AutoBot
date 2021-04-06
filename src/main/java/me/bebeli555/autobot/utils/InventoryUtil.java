@@ -166,6 +166,19 @@ public class InventoryUtil extends AutoBot {
 	}
 	
 	/**
+	 * Check if hotbar has the given item
+	 */
+	public static boolean hasHotbarItem(Item item) {
+		for (int i = 0; i < 9; i++) {
+			if (getItemStack(i).getItem() == item) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Check if ur inventory contains the given block
 	 */
 	public static boolean hasBlock(Block block) {

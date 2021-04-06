@@ -1,6 +1,7 @@
 package me.bebeli555.autobot;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
@@ -23,11 +24,13 @@ import me.bebeli555.autobot.mods.other.AutoEnderChestMiner;
 import me.bebeli555.autobot.mods.other.AutoFirework;
 import me.bebeli555.autobot.mods.other.AutoInventoryManager;
 import me.bebeli555.autobot.mods.other.AutoMend;
+import me.bebeli555.autobot.mods.other.AutoMessager;
 import me.bebeli555.autobot.mods.other.AutoTrap;
 import me.bebeli555.autobot.mods.other.AutoTrapIndicator;
 import me.bebeli555.autobot.mods.other.AutoWeb;
 import me.bebeli555.autobot.mods.other.Burrow;
 import me.bebeli555.autobot.mods.other.CrystalBlock;
+import me.bebeli555.autobot.mods.other.MiningSpoof;
 import me.bebeli555.autobot.rendering.Renderer;
 import me.bebeli555.autobot.utils.EatingUtil;
 import me.zero.alpine.EventBus;
@@ -50,7 +53,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class AutoBot {
     public static final String MODID = "autobot";
     public static final String NAME = "AutoBot";
-    public static final String VERSION = "1.04";
+    public static final String VERSION = "1.05";
     public static final String DISCORD = "discord.gg/xSukBcyd8m";
     
     public static Minecraft mc = Minecraft.getMinecraft();
@@ -110,7 +113,9 @@ public class AutoBot {
     			new AutoTrapIndicator();
     			new AutoWeb();
     			new CrystalBlock();
-    			new Burrow();
+     			new Burrow();
+    			new AutoMessager();
+    			new MiningSpoof();
     			
     			new Snake();
     			new Tetris();

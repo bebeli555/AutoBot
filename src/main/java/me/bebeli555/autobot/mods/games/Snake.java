@@ -33,7 +33,7 @@ public class Snake extends AutoBot {
 	public static int y = mc.displayHeight / 5;
 	
 	public Snake() {
-		super(Group.GAMES, "Snake", "Snake game");
+		super(Group.GAMES, "Snake", true, "Snake game");
 	}
 	
 	@Override

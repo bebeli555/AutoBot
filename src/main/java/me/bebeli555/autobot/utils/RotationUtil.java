@@ -41,6 +41,17 @@ public class RotationUtil extends AutoBot {
 	}
 	
 	/**
+	 * Rotates to the given vector only serverside
+	 * Doesnt send a extra packet when called
+	 */
+	public static void rotateSpoofNoPacket(Vec3d vec) {
+		float[] rotations = getRotations(vec);
+		yaw = rotations[0];
+		pitch = rotations[1];
+		AutoBot.EVENT_BUS.subscribe(rotationUtil);
+	}
+	
+	/**
 	 * Stops rotating if you called the rotateSpoof then u need to call this
 	 */
 	public static void stopRotating() {
