@@ -21,7 +21,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = "1.05"
+version = "1.06"
 group = "me.bebeli555.autobot"
 archivesBaseName = "AutoBot"
 
@@ -122,3 +122,5 @@ reobf {
         classpath = sourceSets.main.compileClasspath
     }
 }
+
+build.dependsOn(shadowJar)

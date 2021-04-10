@@ -4,12 +4,13 @@ import java.util.HashMap;
 
 import org.lwjgl.input.Keyboard;
 
+import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.Commands;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
-public class Keybind {
+public class Keybind extends AutoBot {
 	public static HashMap<String, String> keyBinds = new HashMap<String, String>();
 	
 	@SubscribeEvent
@@ -20,6 +21,11 @@ public class Keybind {
 		
 		String id = keyBinds.get(Keyboard.getKeyName(Keyboard.getEventKey()));
 		if (id != null) {
+			if (!AutoBot.initDone) {
+				sendMessage("Initialization isnt done yet. Try again", true);
+				return;
+			}
+			
 			if (id.equals("Keybind")) {
 				Commands.openGui = true;
 				MinecraftForge.EVENT_BUS.register(Gui.gui);

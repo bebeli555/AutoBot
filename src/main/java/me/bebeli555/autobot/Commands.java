@@ -27,6 +27,11 @@ public class Commands extends AutoBot {
 			mc.ingameGUI.getChatGUI().addToSentMessages(messageReal);
 			message = message.replace(prefix, "");
 
+			if (!AutoBot.initDone) {
+				sendMessage("Initialization isnt done yet. Try again", true);
+				return;
+			}
+			
 			//Open gui command
 			if (message.equals("gui")) {
 				openGui = true;
@@ -35,9 +40,17 @@ public class Commands extends AutoBot {
 			
 			//Set settings
 			else if (message.startsWith("set")) {
-				String split[] = messageReal.split(" ");
-				String id = split[1].replace("_", " ");
-				String value = split[2];
+				String id = "";
+				String value = "";
+				
+				try {
+					String split[] = messageReal.split(" ");
+					id = split[1].replace("_", " ");
+					value = split[2];
+				} catch (Exception e2) {
+					sendMessage("Invalid arguments. Working example: ++set Tetris false", true);
+					return;
+				}
 				
 				GuiNode guiNode = Settings.getGuiNodeFromId(id);
 				if (guiNode == null) {

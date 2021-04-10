@@ -20,4 +20,6 @@ public class GuiSettings extends AutoBot {
 		public static Setting groupTextColor = new Setting(guiSettings, Mode.TEXT, "Group color", "0xFFe3a520", "The text color of the group");
 		public static Setting groupScale = new Setting(guiSettings, Mode.DOUBLE, "Group scale", 1.25, "The group text scale");
 		public static Setting groupBackground = new Setting(guiSettings, Mode.TEXT, "Group background", "0x3650b57c", "The group background color");
+		public static Setting scrollAmount = new Setting(guiSettings, Mode.INTEGER, "ScrollAmount", 35, "How many things to scroll with one wheel scroll");
+		public static Setting scrollSave = new Setting(guiSettings, Mode.BOOLEAN, "ScrollSave", false, "Doesnt reset mouse scrolled position if true");
 }

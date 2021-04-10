@@ -3,7 +3,7 @@ package me.bebeli555.autobot.gui;
 public enum Group {
 	BOTS("Bots", 430 + 55, 50, "The bots"),
 	GUI("GUI", 190 + 55, 50, "Stuff about the GUI"),
-	OTHER("Other", 550 + 55, 50, "Other \"smaller\" modules"),
+	OTHER("Other", 550 + 55, 50, "Other modules"),
 	GAMES("Games", 310 + 55, 50, "Fun games to play");
 	
 	public String name;

@@ -36,7 +36,7 @@ public class AutoBuilder extends AutoBot {
 	private static BlockPos playerPos;
 	private static AutoBuilder autoBuilder;
 	
-	public static Setting setStructure = new Setting(Mode.BOOLEAN, "Set Structure", false, "Click this to set the structure", "You can middleclick on blocks while this is on", "to add them to the structure", "When ur done toggle this off and autobuilder", "will now build the structure you made");
+	public static Setting setStructure = new Setting(Mode.BOOLEAN, "SetStructure", false, "Click this to set the structure", "You can middleclick on blocks while this is on", "to add them to the structure", "When ur done toggle this off and autobuilder", "will now build the structure you made");
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 50, "Delay in milliseconds between placing blocks");
 	public static Setting toggle = new Setting(Mode.BOOLEAN, "Toggle", false, "If true then it will toggle the module off", "After the structure has been built", "Note: This has no effect if you have move on");
 	public static Setting move = new Setting(Mode.BOOLEAN, "Move", false, "When the structure has been built it will move", "To the given coordinates below and then build it again", "The coordinates are relative to the player so", "For example X: 1 will make it walk 1 block right");

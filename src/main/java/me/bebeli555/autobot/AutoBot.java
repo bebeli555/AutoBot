@@ -31,6 +31,7 @@ import me.bebeli555.autobot.mods.other.AutoWeb;
 import me.bebeli555.autobot.mods.other.Burrow;
 import me.bebeli555.autobot.mods.other.CrystalBlock;
 import me.bebeli555.autobot.mods.other.MiningSpoof;
+import me.bebeli555.autobot.mods.other.PacketCanceller;
 import me.bebeli555.autobot.rendering.Renderer;
 import me.bebeli555.autobot.utils.EatingUtil;
 import me.zero.alpine.EventBus;
@@ -53,7 +54,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 public class AutoBot {
     public static final String MODID = "autobot";
     public static final String NAME = "AutoBot";
-    public static final String VERSION = "1.05";
+    public static final String VERSION = "1.06";
     public static final String DISCORD = "discord.gg/xSukBcyd8m";
     
     public static Minecraft mc = Minecraft.getMinecraft();
@@ -63,6 +64,7 @@ public class AutoBot {
     public String[] description;
     public Group group;
     public boolean toggled, disableToggleMessage;
+    public static boolean initDone;
     public static ArrayList<AutoBot> modules = new ArrayList<AutoBot>();
     
     public AutoBot(Group group, String name, String... description) {
@@ -90,6 +92,8 @@ public class AutoBot {
 	public void init(FMLInitializationEvent event) {
     	new Thread() {
     		public void run() {
+    			long ms = System.currentTimeMillis();
+    			
     			//Initialize classes
     	    	MinecraftForge.EVENT_BUS.register(new HelpMessage());
     	    	MinecraftForge.EVENT_BUS.register(new Commands());
@@ -104,6 +108,7 @@ public class AutoBot {
     	    	new ObbyBuilderBot();
     	    	
     			//new AutoWither();
+    			new PacketCanceller();
     			new AutoFirework();
     			new AutoEnderChestMiner();
     			new AutoBuilder();
@@ -129,6 +134,9 @@ public class AutoBot {
     			for (AutoBot module : modules) {
     				module.onPostInit();
     			}
+    			
+    			System.out.println("AutoBot - Initialization took " + Math.abs(System.currentTimeMillis() - ms) + "ms");
+    			initDone = true;
     		}
     	}.start();
     }

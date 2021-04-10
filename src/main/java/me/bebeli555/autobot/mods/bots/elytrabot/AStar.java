@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import me.bebeli555.autobot.AutoBot;
 import me.bebeli555.autobot.utils.BlockUtil;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 public class AStar extends AutoBot {
@@ -101,6 +102,14 @@ public class AStar extends AutoBot {
 					}
 					
 					if (isSolid(check) || !BlockUtil.isInRenderDistance(check)) {
+						continue outer;
+					}
+					
+					if (getBlock(check) == Blocks.LAVA && ElytraBot.avoidLava.booleanValue()) {
+						continue outer;
+					}
+					
+					if (ElytraBot.maxY.intValue() != -1 && check.getY() > ElytraBot.maxY.intValue()) {
 						continue outer;
 					}
 				}

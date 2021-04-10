@@ -23,7 +23,7 @@ public class AutoInventoryManager extends AutoBot {
 	public static Thread thread;
 	public static ArrayList<ItemUtil> layout = new ArrayList<ItemUtil>();
 	
-	public static Setting saveLayout = new Setting(Mode.BOOLEAN, "Save Layout", false, "Saves the current inventory layout");
+	public static Setting saveLayout = new Setting(Mode.BOOLEAN, "SaveLayout", false, "Saves the current inventory layout");
 	public static Setting delay = new Setting(Mode.INTEGER, "Delay", 150, "Delay in ms between the slot clicks");
 	
 	public AutoInventoryManager() {

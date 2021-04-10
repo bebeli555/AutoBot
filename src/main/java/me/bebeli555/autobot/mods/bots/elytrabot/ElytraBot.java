@@ -62,6 +62,9 @@ public class ElytraBot extends AutoBot {
 		public static Setting elytraFlySpeed = new Setting(flyMode, "ElytraFly", Mode.DOUBLE, "Speed", 1.81, "Speed for elytrafly");
 		public static Setting elytraFlyManuverSpeed = new Setting(flyMode, "ElytraFly", Mode.DOUBLE, "ManuverSpeed", 1.0, "Speed used for manuvering", "It has to be lower because it would", "Go off the target pos with too high speed");
 		public static Setting fireworkDelay = new Setting(flyMode, "Firework", Mode.DOUBLE, "FireworkDelay", 2.8, "Delay between the clicks on the fireworks", "In seconds");
+	public static Setting pathfinding = new Setting(Mode.LABEL, "Pathfinding", true, "Settings about the pathfinding");
+		public static Setting avoidLava = new Setting(pathfinding, Mode.BOOLEAN, "AvoidLava", false, "Avoids lava");
+		public static Setting maxY = new Setting(pathfinding, Mode.INTEGER, "MaxY", "", "Max Y-Coordinate the pathfinding can go to");
 	public static Setting coordinates = new Setting(Mode.BOOLEAN, "Coordinates", false, "If false then it will just start going straight", "To the direction you are looking at", "If true then it will go to the given coordinates below");
 		public static Setting gotoX = new Setting(coordinates, Mode.INTEGER, "X", "", "X-Coordinate where the bot will try to go");
 		public static Setting gotoZ = new Setting(coordinates, Mode.INTEGER, "Z", "", "Z-Coordinate where the bot will try to go");
@@ -125,6 +128,7 @@ public class ElytraBot extends AutoBot {
 		blocksPerSecond = 0;
 		blocksPerSecondCounter = 0;
 		lastSecondPos = null;
+		jumpY = -1;
 		RenderPath.clearPath();
 		PacketFly.toggle(false);
 		ElytraFly.toggle(false);

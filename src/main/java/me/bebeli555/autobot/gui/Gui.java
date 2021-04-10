@@ -1,6 +1,7 @@
 package me.bebeli555.autobot.gui;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.net.URI;
@@ -26,16 +27,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class Gui extends GuiScreen {	
-	private static Minecraft mc = Minecraft.getMinecraft();
+	public static Minecraft mc = Minecraft.getMinecraft();
 	public static ArrayList<GuiClick> visibleNodes = new ArrayList<GuiClick>();
 	public static boolean isOpen;
 	public static GuiClick selected, description;
 	public static Group dragging;
-	public static int lastMouseX, lastMouseY;
+	public static int lastMouseX, lastMouseY, oldScale;
 	public static Timer backspaceTimer = new Timer();
 	public static boolean backspaceStarted, pasting;
 	public static char pasteChar;
 	public static Gui gui = new Gui();
+	public static ArrayList<Point> groupCoords = new ArrayList<Point>();
 	
 	@Override
 	public void initGui() {
@@ -102,6 +104,7 @@ public class Gui extends GuiScreen {
 				if (mouseY > 10) {
 					dragging.x += mouseX - lastMouseX;
 					dragging.y += mouseY - lastMouseY;
+					updateGuiGroups();
 				}
 			} else {
 				dragging = null;
@@ -316,6 +319,15 @@ public class Gui extends GuiScreen {
 		if (right) drawRect(n.x2, n.y, n.x2 + GuiSettings.borderSize.intValue(), n.y2 + GuiSettings.borderSize.intValue(), color);
 	}
 	
+	//Update gui groups. So these are set when gui closes not the scrolled ones or the gui could go out of screen and confusion strikes
+	public static void updateGuiGroups() {
+		groupCoords.clear();
+		
+		for (Group group : Group.values()) {
+			groupCoords.add(new Point(group.x, group.y));
+		}
+	}
+	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		//Just use the lastMouse positions saved by the rendering loop because these are different
@@ -468,18 +480,55 @@ public class Gui extends GuiScreen {
 	}
 	
 	@SubscribeEvent
+	public void onMouseEvent(GuiScreenEvent.MouseInputEvent event) {
+		int wheel = Mouse.getDWheel();
+		int amount = GuiSettings.scrollAmount.intValue() * Math.abs(wheel) / 120;
+		
+		//Up
+		if (wheel > 0) {
+			for (Group group : Group.values()) {
+				group.y += amount;
+			}
+		}
+		
+		//Down
+		else if (wheel < 0) {
+			for (Group group : Group.values()) {
+				group.y += -amount;
+			}
+		}
+	}
+	
+	@SubscribeEvent
 	public void onTick(ClientTickEvent e) {
 		//Have to open the GUI this way because if you try to open it in the chat event it wont work and if you try to put it to a new thread the mouse will be invisible.
 		if (Commands.openGui) {
+			//If gui scale is auto or large in windowed mode then force normal scale
+			oldScale = mc.gameSettings.guiScale;
+			if (!mc.isFullScreen()) {
+				if (mc.gameSettings.guiScale == 3 || mc.gameSettings.guiScale == 0) {
+					mc.gameSettings.guiScale = 2;
+				}
+			}
+			
 			mc.displayGuiScreen(new Gui());
 			Commands.openGui = false;
 			isOpen = true;
+			updateGuiGroups();
 			return;
 		}
 		
 		//Save settings when GUI is closed
 		if (isOpen && mc.currentScreen == null) {
+			if (!GuiSettings.scrollSave.booleanValue()) {
+				for (int i = 0; i < Group.values().length; i++) {
+					Group.values()[i].x = groupCoords.get(i).x;
+					Group.values()[i].y = groupCoords.get(i).y;
+				}
+			}
+			
 			Settings.saveSettings();
+			mc.gameSettings.guiScale = oldScale;
 			isOpen = false;
 			selected = null;
 			pasting = false;
