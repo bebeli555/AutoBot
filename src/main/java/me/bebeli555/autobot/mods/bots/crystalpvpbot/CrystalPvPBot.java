@@ -42,6 +42,7 @@ public class CrystalPvPBot extends AutoBot {
 		public static Setting autoCrystalMinTargetDmg = new Setting(autoCrystalSetting, Mode.INTEGER, "MinTargetDmg", 5, "Minimum damage to do to target to active auto crystal");
 		public static Setting autoCrystalRange = new Setting(autoCrystalSetting, Mode.INTEGER, "Range", 4, "The range how far it can place and break crystals");
 		public static Setting autoCrystalDelay = new Setting(autoCrystalSetting, Mode.INTEGER, "Delay", 50, "Delay in ms it will wait after a place/break");
+		public static Setting autoCrystalPredict = new Setting(autoCrystalSetting, Mode.BOOLEAN, "Predict", true, "Predicts crystal spawn");
 	public static Setting autoTrap = new Setting(Mode.LABEL, "AutoTrap", true, "AutoTrap for the bot");
 		public static Setting autoTrapDelay = new Setting(autoTrap, Mode.INTEGER, "Delay", 50, "Delay in ms it will wait after a successful place");
 		public static Setting autoTrapDistance = new Setting(autoTrap, Mode.INTEGER, "Distance", 4, "Allowed place distance");

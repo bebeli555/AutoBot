@@ -1,15 +1,24 @@
 package me.bebeli555.autobot.mods.bots.crystalpvpbot;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import me.bebeli555.autobot.AutoBot;
+import me.bebeli555.autobot.events.PacketEvent;
 import me.bebeli555.autobot.utils.BaritoneUtil;
 import me.bebeli555.autobot.utils.BlockUtil;
 import me.bebeli555.autobot.utils.CrystalUtil;
+import me.bebeli555.autobot.utils.ICPacketUseEntity;
 import me.bebeli555.autobot.utils.InventoryUtil;
 import me.bebeli555.autobot.utils.MiningUtil;
 import me.bebeli555.autobot.utils.RotationUtil;
+import me.zero.alpine.listener.EventHandler;
+import me.zero.alpine.listener.Listener;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -19,6 +28,7 @@ public class AutoCrystal extends AutoBot {
 	public Thread thread;
 	public static BlockPos placed;
 	public static boolean dontToggle;
+	private final List<BlockPos> placePosList = new CopyOnWriteArrayList<BlockPos>();
 	
 	public AutoCrystal(EntityPlayer target) {
 		this.target = target;
@@ -73,6 +83,7 @@ public class AutoCrystal extends AutoBot {
 				if (placeCrystal != null) {
 					BlockUtil.placeItem(Items.END_CRYSTAL, placeCrystal, false);
 					placed = placeCrystal;
+					this.placePosList.add(placeCrystal);
 					AutoBot.sleep(CrystalPvPBot.autoCrystalDelay.intValue());
 				}	
 			}
@@ -161,4 +172,24 @@ public class AutoCrystal extends AutoBot {
 	public static BlockPos getMostDamageSpot(EntityPlayer target) {
 		return new AutoCrystal(target).getBestCrystalSpot(false);
 	}
+	
+	
+	/**
+	 * Shitty predict :^)
+	 */
+	@EventHandler
+    private Listener<PacketEvent> packetEvent = new Listener<>(event -> {
+    	if (event.packet instanceof SPacketSpawnObject && CrystalPvPBot.autoCrystalPredict.booleanValue()) { 
+        	final SPacketSpawnObject packet2 = (SPacketSpawnObject) event.packet;
+        	if (packet2.getType() == 51) {
+        		final BlockPos pos = new BlockPos(packet2.getX(), packet2.getY(), packet2.getZ());
+        		if (placePosList.contains(pos.down())) {
+		        	CPacketUseEntity useEntity = new CPacketUseEntity();
+		            ((ICPacketUseEntity)useEntity).setEntityId(packet2.getEntityID());
+		            ((ICPacketUseEntity)useEntity).setAction(CPacketUseEntity.Action.ATTACK);
+		            mc.getConnection().sendPacket(useEntity);
+        		}
+        	}
+        }
+    });
 }
