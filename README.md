@@ -6,3 +6,6 @@ AutoBot is a module styled client for anarchy servers that offers bots and auto-
 <br/>
 <br/>
 You can build the project by running gradlew setupDecompWorkspace and gradlew build. Or you can download the jar from the releases tab or from our discord.
+<br>
+<br>
+You should check out https://github.com/bebeli555/CookieClient. Its a client for anarchy servers that has everything this does and alot more. AutoBot is no longer supported.
