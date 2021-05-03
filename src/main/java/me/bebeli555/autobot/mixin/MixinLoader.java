@@ -35,7 +35,6 @@ public class MixinLoader implements IFMLLoadingPlugin {
 
     @Override
     public void injectData (Map<String, Object> data) {
-
     }
 
     @Override
